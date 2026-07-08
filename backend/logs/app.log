@@ -1,0 +1,772 @@
+2026-07-08T20:55:01 | INFO     | main | Starting AI Crime Intelligence Platform [development]
+2026-07-08T20:55:01 | ERROR    | core.database | Database connection failed: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'jqir#@localhost' ([Errno 11003] getaddrinfo failed)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-07-08T20:55:01 | WARNING  | main | MySQL connection FAILED — check DB settings
+2026-07-08T20:57:22 | INFO     | main | Shutting down AI Crime Intelligence Platform
+2026-07-08T21:05:44 | INFO     | main | Starting AI Crime Intelligence Platform [development]
+2026-07-08T21:05:44 | ERROR    | core.database | Database connection failed: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'jqir#@localhost' ([Errno 11003] getaddrinfo failed)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-07-08T21:05:44 | WARNING  | main | MySQL connection FAILED — check DB settings
+2026-07-08T21:17:01 | INFO     | main | Shutting down AI Crime Intelligence Platform
+2026-07-08T21:18:14 | INFO     | main | Starting AI Crime Intelligence Platform [development]
+2026-07-08T21:18:14 | ERROR    | core.database | Database connection failed: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'jqir#@localhost' ([Errno 11003] getaddrinfo failed)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-07-08T21:18:14 | WARNING  | main | MySQL connection FAILED — check DB settings
+2026-07-08T21:20:35 | INFO     | main | Shutting down AI Crime Intelligence Platform
+2026-07-08T21:22:05 | INFO     | main | Starting AI Crime Intelligence Platform [development]
+2026-07-08T21:22:05 | INFO     | sqlalchemy.engine.Engine | SELECT DATABASE()
+2026-07-08T21:22:05 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:22:05 | INFO     | sqlalchemy.engine.Engine | SELECT @@sql_mode
+2026-07-08T21:22:05 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:22:05 | INFO     | sqlalchemy.engine.Engine | SELECT @@lower_case_table_names
+2026-07-08T21:22:05 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:22:05 | INFO     | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-07-08T21:22:05 | INFO     | sqlalchemy.engine.Engine | SELECT 1
+2026-07-08T21:22:05 | INFO     | sqlalchemy.engine.Engine | [generated in 0.00157s] {}
+2026-07-08T21:22:05 | INFO     | sqlalchemy.engine.Engine | ROLLBACK
+2026-07-08T21:22:05 | INFO     | main | MySQL connection OK
+2026-07-08T21:23:32 | ERROR    | error_handler | Unhandled exception on POST /api/v1/auth/login
+Traceback (most recent call last):
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2419, in _determine_joins
+    self.primaryjoin = join_condition(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\sql\util.py", line 123, in join_condition
+    return Join._join_condition(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\sql\selectable.py", line 1358, in _join_condition
+    raise exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Can't find any foreign key relationships between 'crimes' and 'suspects'.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 191, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\middleware\rate_limit.py", line 42, in dispatch
+    response = await call_next(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 165, in call_next
+    raise app_exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 151, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 191, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\middleware\logging_middleware.py", line 17, in dispatch
+    response = await call_next(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 165, in call_next
+    raise app_exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 151, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\cors.py", line 91, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\cors.py", line 146, in simple_response
+    await self.app(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 758, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 778, in app
+    await route.handle(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 299, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 79, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 74, in app
+    response = await func(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 299, in app
+    raise e
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 294, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 193, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 42, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 33, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 877, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 807, in run
+    result = context.run(func, *args)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\api\v1\routes\auth.py", line 86, in login
+    return auth_service.login_user(db, payload)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\services\auth_service.py", line 56, in login_user
+    user = db.query(User).filter(User.username == payload.username).first()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\session.py", line 2912, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 276, in __init__
+    self._set_entities(entities)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 288, in _set_entities
+    self._raw_columns = [
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 289, in <listcomp>
+    coercions.expect(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\sql\coercions.py", line 406, in expect
+    insp._post_inspect
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 1260, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2707, in _post_inspect
+    self._check_configure()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2386, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 4199, in _configure_registries
+    _do_configure_registries(registries, cascade)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 4240, in _do_configure_registries
+    mapper._post_configure_properties()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2403, in _post_configure_properties
+    prop.init()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\interfaces.py", line 579, in init
+    self.do_init()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1637, in do_init
+    self._setup_join_conditions()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1882, in _setup_join_conditions
+    self._join_condition = jc = JoinCondition(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2306, in __init__
+    self._determine_joins()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2440, in _determine_joins
+    raise sa_exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Could not determine join condition between parent/child tables on relationship Crime.suspects - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+2026-07-08T21:24:10 | ERROR    | error_handler | Unhandled exception on POST /api/v1/auth/login
+Traceback (most recent call last):
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\streams\memory.py", line 98, in receive
+    return self.receive_nowait()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\streams\memory.py", line 93, in receive_nowait
+    raise WouldBlock
+anyio.WouldBlock
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 159, in call_next
+    message = await recv_stream.receive()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\streams\memory.py", line 118, in receive
+    raise EndOfStream
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 191, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\middleware\rate_limit.py", line 42, in dispatch
+    response = await call_next(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 165, in call_next
+    raise app_exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 151, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 191, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\middleware\logging_middleware.py", line 17, in dispatch
+    response = await call_next(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 165, in call_next
+    raise app_exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 151, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\cors.py", line 91, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\cors.py", line 146, in simple_response
+    await self.app(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 758, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 778, in app
+    await route.handle(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 299, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 79, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 74, in app
+    response = await func(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 299, in app
+    raise e
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 294, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 193, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 42, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 33, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 877, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 807, in run
+    result = context.run(func, *args)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\api\v1\routes\auth.py", line 86, in login
+    return auth_service.login_user(db, payload)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\services\auth_service.py", line 56, in login_user
+    user = db.query(User).filter(User.username == payload.username).first()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\session.py", line 2912, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 276, in __init__
+    self._set_entities(entities)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 288, in _set_entities
+    self._raw_columns = [
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 289, in <listcomp>
+    coercions.expect(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\sql\coercions.py", line 406, in expect
+    insp._post_inspect
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 1260, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2707, in _post_inspect
+    self._check_configure()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2386, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 4199, in _configure_registries
+    _do_configure_registries(registries, cascade)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 4236, in _do_configure_registries
+    raise e
+sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Crime(crimes)]'. Original exception was: Could not determine join condition between parent/child tables on relationship Crime.suspects - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+2026-07-08T21:24:32 | ERROR    | error_handler | Unhandled exception on POST /api/v1/auth/login
+Traceback (most recent call last):
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\streams\memory.py", line 98, in receive
+    return self.receive_nowait()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\streams\memory.py", line 93, in receive_nowait
+    raise WouldBlock
+anyio.WouldBlock
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 159, in call_next
+    message = await recv_stream.receive()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\streams\memory.py", line 118, in receive
+    raise EndOfStream
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 191, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\middleware\rate_limit.py", line 42, in dispatch
+    response = await call_next(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 165, in call_next
+    raise app_exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 151, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 191, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\middleware\logging_middleware.py", line 17, in dispatch
+    response = await call_next(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 165, in call_next
+    raise app_exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 151, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\cors.py", line 91, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\cors.py", line 146, in simple_response
+    await self.app(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 758, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 778, in app
+    await route.handle(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 299, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 79, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 74, in app
+    response = await func(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 299, in app
+    raise e
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 294, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 193, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 42, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 33, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 877, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 807, in run
+    result = context.run(func, *args)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\api\v1\routes\auth.py", line 86, in login
+    return auth_service.login_user(db, payload)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\services\auth_service.py", line 56, in login_user
+    user = db.query(User).filter(User.username == payload.username).first()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\session.py", line 2912, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 276, in __init__
+    self._set_entities(entities)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 288, in _set_entities
+    self._raw_columns = [
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 289, in <listcomp>
+    coercions.expect(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\sql\coercions.py", line 406, in expect
+    insp._post_inspect
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 1260, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2707, in _post_inspect
+    self._check_configure()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2386, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 4199, in _configure_registries
+    _do_configure_registries(registries, cascade)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 4236, in _do_configure_registries
+    raise e
+sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Crime(crimes)]'. Original exception was: Could not determine join condition between parent/child tables on relationship Crime.suspects - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+2026-07-08T21:25:54 | INFO     | main | Shutting down AI Crime Intelligence Platform
+2026-07-08T21:27:41 | INFO     | main | Starting AI Crime Intelligence Platform [development]
+2026-07-08T21:27:41 | INFO     | sqlalchemy.engine.Engine | SELECT DATABASE()
+2026-07-08T21:27:41 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:27:41 | INFO     | sqlalchemy.engine.Engine | SELECT @@sql_mode
+2026-07-08T21:27:41 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:27:41 | INFO     | sqlalchemy.engine.Engine | SELECT @@lower_case_table_names
+2026-07-08T21:27:41 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:27:41 | INFO     | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-07-08T21:27:41 | INFO     | sqlalchemy.engine.Engine | SELECT 1
+2026-07-08T21:27:41 | INFO     | sqlalchemy.engine.Engine | [generated in 0.00217s] {}
+2026-07-08T21:27:41 | INFO     | sqlalchemy.engine.Engine | ROLLBACK
+2026-07-08T21:27:41 | INFO     | main | MySQL connection OK
+2026-07-08T21:28:26 | ERROR    | error_handler | Unhandled exception on POST /api/v1/auth/login
+Traceback (most recent call last):
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2419, in _determine_joins
+    self.primaryjoin = join_condition(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\sql\util.py", line 123, in join_condition
+    return Join._join_condition(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\sql\selectable.py", line 1358, in _join_condition
+    raise exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Can't find any foreign key relationships between 'crimes' and 'suspects'.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 191, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\middleware\rate_limit.py", line 42, in dispatch
+    response = await call_next(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 165, in call_next
+    raise app_exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 151, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 191, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\middleware\logging_middleware.py", line 17, in dispatch
+    response = await call_next(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 165, in call_next
+    raise app_exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 151, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\cors.py", line 91, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\cors.py", line 146, in simple_response
+    await self.app(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 758, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 778, in app
+    await route.handle(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 299, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 79, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 74, in app
+    response = await func(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 299, in app
+    raise e
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 294, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 193, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 42, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 33, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 877, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 807, in run
+    result = context.run(func, *args)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\api\v1\routes\auth.py", line 86, in login
+    return auth_service.login_user(db, payload)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\services\auth_service.py", line 56, in login_user
+    user = db.query(User).filter(User.username == payload.username).first()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\session.py", line 2912, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 276, in __init__
+    self._set_entities(entities)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 288, in _set_entities
+    self._raw_columns = [
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 289, in <listcomp>
+    coercions.expect(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\sql\coercions.py", line 406, in expect
+    insp._post_inspect
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 1260, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2707, in _post_inspect
+    self._check_configure()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2386, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 4199, in _configure_registries
+    _do_configure_registries(registries, cascade)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 4240, in _do_configure_registries
+    mapper._post_configure_properties()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2403, in _post_configure_properties
+    prop.init()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\interfaces.py", line 579, in init
+    self.do_init()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1637, in do_init
+    self._setup_join_conditions()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 1882, in _setup_join_conditions
+    self._join_condition = jc = JoinCondition(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2306, in __init__
+    self._determine_joins()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\relationships.py", line 2440, in _determine_joins
+    raise sa_exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Could not determine join condition between parent/child tables on relationship Crime.suspects - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+2026-07-08T21:28:33 | ERROR    | error_handler | Unhandled exception on POST /api/v1/auth/login
+Traceback (most recent call last):
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\streams\memory.py", line 98, in receive
+    return self.receive_nowait()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\streams\memory.py", line 93, in receive_nowait
+    raise WouldBlock
+anyio.WouldBlock
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 159, in call_next
+    message = await recv_stream.receive()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\streams\memory.py", line 118, in receive
+    raise EndOfStream
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 191, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\middleware\rate_limit.py", line 42, in dispatch
+    response = await call_next(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 165, in call_next
+    raise app_exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 151, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 191, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\middleware\logging_middleware.py", line 17, in dispatch
+    response = await call_next(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 165, in call_next
+    raise app_exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 151, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\cors.py", line 91, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\cors.py", line 146, in simple_response
+    await self.app(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 758, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 778, in app
+    await route.handle(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 299, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 79, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 74, in app
+    response = await func(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 299, in app
+    raise e
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 294, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 193, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 42, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 33, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 877, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 807, in run
+    result = context.run(func, *args)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\api\v1\routes\auth.py", line 86, in login
+    return auth_service.login_user(db, payload)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\services\auth_service.py", line 56, in login_user
+    user = db.query(User).filter(User.username == payload.username).first()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\session.py", line 2912, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 276, in __init__
+    self._set_entities(entities)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 288, in _set_entities
+    self._raw_columns = [
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 289, in <listcomp>
+    coercions.expect(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\sql\coercions.py", line 406, in expect
+    insp._post_inspect
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 1260, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2707, in _post_inspect
+    self._check_configure()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2386, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 4199, in _configure_registries
+    _do_configure_registries(registries, cascade)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 4236, in _do_configure_registries
+    raise e
+sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Crime(crimes)]'. Original exception was: Could not determine join condition between parent/child tables on relationship Crime.suspects - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+2026-07-08T21:28:52 | ERROR    | error_handler | Unhandled exception on POST /api/v1/auth/login
+Traceback (most recent call last):
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\streams\memory.py", line 98, in receive
+    return self.receive_nowait()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\streams\memory.py", line 93, in receive_nowait
+    raise WouldBlock
+anyio.WouldBlock
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 159, in call_next
+    message = await recv_stream.receive()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\streams\memory.py", line 118, in receive
+    raise EndOfStream
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 191, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\middleware\rate_limit.py", line 42, in dispatch
+    response = await call_next(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 165, in call_next
+    raise app_exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 151, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 191, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\middleware\logging_middleware.py", line 17, in dispatch
+    response = await call_next(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 165, in call_next
+    raise app_exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\base.py", line 151, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\cors.py", line 91, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\cors.py", line 146, in simple_response
+    await self.app(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 758, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 778, in app
+    await route.handle(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 299, in handle
+    await self.app(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 79, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\routing.py", line 74, in app
+    response = await func(request)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 299, in app
+    raise e
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 294, in app
+    raw_response = await run_endpoint_function(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\fastapi\routing.py", line 193, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\starlette\concurrency.py", line 42, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\to_thread.py", line 33, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 877, in run_sync_in_worker_thread
+    return await future
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\anyio\_backends\_asyncio.py", line 807, in run
+    result = context.run(func, *args)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\api\v1\routes\auth.py", line 86, in login
+    return auth_service.login_user(db, payload)
+  File "C:\Users\HS\Downloads\Datathon project\ai-crime-intelligence-platform\backend\services\auth_service.py", line 56, in login_user
+    user = db.query(User).filter(User.username == payload.username).first()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\session.py", line 2912, in query
+    return self._query_cls(entities, self, **kwargs)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 276, in __init__
+    self._set_entities(entities)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 288, in _set_entities
+    self._raw_columns = [
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\query.py", line 289, in <listcomp>
+    coercions.expect(
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\sql\coercions.py", line 406, in expect
+    insp._post_inspect
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\util\langhelpers.py", line 1260, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2707, in _post_inspect
+    self._check_configure()
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 2386, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 4199, in _configure_registries
+    _do_configure_registries(registries, cascade)
+  File "c:\users\hs\appdata\local\programs\python\python39\lib\site-packages\sqlalchemy\orm\mapper.py", line 4236, in _do_configure_registries
+    raise e
+sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Crime(crimes)]'. Original exception was: Could not determine join condition between parent/child tables on relationship Crime.suspects - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+2026-07-08T21:31:00 | INFO     | main | Shutting down AI Crime Intelligence Platform
+2026-07-08T21:32:46 | INFO     | main | Starting AI Crime Intelligence Platform [development]
+2026-07-08T21:32:46 | INFO     | sqlalchemy.engine.Engine | SELECT DATABASE()
+2026-07-08T21:32:46 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:32:46 | INFO     | sqlalchemy.engine.Engine | SELECT @@sql_mode
+2026-07-08T21:32:46 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:32:46 | INFO     | sqlalchemy.engine.Engine | SELECT @@lower_case_table_names
+2026-07-08T21:32:46 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:32:46 | INFO     | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-07-08T21:32:46 | INFO     | sqlalchemy.engine.Engine | SELECT 1
+2026-07-08T21:32:46 | INFO     | sqlalchemy.engine.Engine | [generated in 0.00117s] {}
+2026-07-08T21:32:46 | INFO     | sqlalchemy.engine.Engine | ROLLBACK
+2026-07-08T21:32:46 | INFO     | main | MySQL connection OK
+2026-07-08T21:32:54 | INFO     | main | Shutting down AI Crime Intelligence Platform
+2026-07-08T21:34:49 | INFO     | main | Starting AI Crime Intelligence Platform [development]
+2026-07-08T21:34:49 | INFO     | sqlalchemy.engine.Engine | SELECT DATABASE()
+2026-07-08T21:34:49 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:34:49 | INFO     | sqlalchemy.engine.Engine | SELECT @@sql_mode
+2026-07-08T21:34:49 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:34:49 | INFO     | sqlalchemy.engine.Engine | SELECT @@lower_case_table_names
+2026-07-08T21:34:49 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:34:49 | INFO     | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-07-08T21:34:49 | INFO     | sqlalchemy.engine.Engine | SELECT 1
+2026-07-08T21:34:49 | INFO     | sqlalchemy.engine.Engine | [generated in 0.00156s] {}
+2026-07-08T21:34:49 | INFO     | sqlalchemy.engine.Engine | ROLLBACK
+2026-07-08T21:34:49 | INFO     | main | MySQL connection OK
+2026-07-08T21:35:54 | INFO     | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-07-08T21:35:54 | INFO     | sqlalchemy.engine.Engine | SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.full_name AS users_full_name, users.hashed_password AS users_hashed_password, users.`role` AS users_role, users.is_active AS users_is_active, users.last_login_at AS users_last_login_at, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = %(username_1)s 
+ LIMIT %(param_1)s
+2026-07-08T21:35:54 | INFO     | sqlalchemy.engine.Engine | [generated in 0.01042s] {'username_1': 'admin', 'param_1': 1}
+2026-07-08T21:35:55 | INFO     | sqlalchemy.engine.Engine | ROLLBACK
+2026-07-08T21:35:55 | INFO     | http | [7381a51f] POST /api/v1/auth/login → 401 (1760.5ms)
+2026-07-08T21:39:12 | INFO     | main | Shutting down AI Crime Intelligence Platform
+2026-07-08T21:40:46 | INFO     | main | Starting AI Crime Intelligence Platform [development]
+2026-07-08T21:40:46 | INFO     | sqlalchemy.engine.Engine | SELECT DATABASE()
+2026-07-08T21:40:46 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:40:46 | INFO     | sqlalchemy.engine.Engine | SELECT @@sql_mode
+2026-07-08T21:40:46 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:40:46 | INFO     | sqlalchemy.engine.Engine | SELECT @@lower_case_table_names
+2026-07-08T21:40:46 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:40:46 | INFO     | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-07-08T21:40:46 | INFO     | sqlalchemy.engine.Engine | SELECT 1
+2026-07-08T21:40:46 | INFO     | sqlalchemy.engine.Engine | [generated in 0.00221s] {}
+2026-07-08T21:40:46 | INFO     | sqlalchemy.engine.Engine | ROLLBACK
+2026-07-08T21:40:46 | INFO     | main | MySQL connection OK
+2026-07-08T21:47:59 | INFO     | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-07-08T21:47:59 | INFO     | sqlalchemy.engine.Engine | SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.full_name AS users_full_name, users.hashed_password AS users_hashed_password, users.`role` AS users_role, users.is_active AS users_is_active, users.last_login_at AS users_last_login_at, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = %(username_1)s 
+ LIMIT %(param_1)s
+2026-07-08T21:47:59 | INFO     | sqlalchemy.engine.Engine | [generated in 0.00398s] {'username_1': 'admin', 'param_1': 1}
+2026-07-08T21:47:59 | INFO     | sqlalchemy.engine.Engine | ROLLBACK
+2026-07-08T21:47:59 | INFO     | http | [cd0065bc] POST /api/v1/auth/login → 401 (1296.0ms)
+2026-07-08T21:48:40 | INFO     | main | Shutting down AI Crime Intelligence Platform
+2026-07-08T21:52:22 | INFO     | main | Starting AI Crime Intelligence Platform [development]
+2026-07-08T21:52:23 | INFO     | sqlalchemy.engine.Engine | SELECT DATABASE()
+2026-07-08T21:52:23 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:52:23 | INFO     | sqlalchemy.engine.Engine | SELECT @@sql_mode
+2026-07-08T21:52:23 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:52:23 | INFO     | sqlalchemy.engine.Engine | SELECT @@lower_case_table_names
+2026-07-08T21:52:23 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-08T21:52:23 | INFO     | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-07-08T21:52:23 | INFO     | sqlalchemy.engine.Engine | SELECT 1
+2026-07-08T21:52:23 | INFO     | sqlalchemy.engine.Engine | [generated in 0.00278s] {}
+2026-07-08T21:52:23 | INFO     | sqlalchemy.engine.Engine | ROLLBACK
+2026-07-08T21:52:23 | INFO     | main | MySQL connection OK
+2026-07-08T21:53:12 | INFO     | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-07-08T21:53:12 | INFO     | sqlalchemy.engine.Engine | SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.full_name AS users_full_name, users.hashed_password AS users_hashed_password, users.`role` AS users_role, users.is_active AS users_is_active, users.last_login_at AS users_last_login_at, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = %(username_1)s 
+ LIMIT %(param_1)s
+2026-07-08T21:53:12 | INFO     | sqlalchemy.engine.Engine | [generated in 0.00098s] {'username_1': 'admin', 'param_1': 1}
+2026-07-08T21:53:13 | INFO     | sqlalchemy.engine.Engine | UPDATE users SET last_login_at=%(last_login_at)s, updated_at=now() WHERE users.id = %(users_id)s
+2026-07-08T21:53:13 | INFO     | sqlalchemy.engine.Engine | [generated in 0.00348s] {'last_login_at': datetime.datetime(2026, 7, 8, 16, 23, 13, 83509, tzinfo=datetime.timezone.utc), 'users_id': 1}
+2026-07-08T21:53:13 | INFO     | sqlalchemy.engine.Engine | COMMIT
+2026-07-08T21:53:13 | INFO     | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-07-08T21:53:13 | INFO     | sqlalchemy.engine.Engine | SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.full_name AS users_full_name, users.hashed_password AS users_hashed_password, users.`role` AS users_role, users.is_active AS users_is_active, users.last_login_at AS users_last_login_at, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.id = %(pk_1)s
+2026-07-08T21:53:13 | INFO     | sqlalchemy.engine.Engine | [generated in 0.00194s] {'pk_1': 1}
+2026-07-08T21:53:13 | INFO     | services.auth_service | Login: admin  role=UserRole.admin
+2026-07-08T21:53:13 | INFO     | sqlalchemy.engine.Engine | ROLLBACK
+2026-07-08T21:53:13 | INFO     | http | [44af0590] POST /api/v1/auth/login → 200 (1254.6ms)
+2026-07-08T21:53:13 | INFO     | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-07-08T21:53:13 | INFO     | sqlalchemy.engine.Engine | SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.full_name AS users_full_name, users.hashed_password AS users_hashed_password, users.`role` AS users_role, users.is_active AS users_is_active, users.last_login_at AS users_last_login_at, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.id = %(pk_1)s
+2026-07-08T21:53:13 | INFO     | sqlalchemy.engine.Engine | [generated in 0.00206s] {'pk_1': 1}
+2026-07-08T21:53:13 | INFO     | sqlalchemy.engine.Engine | ROLLBACK
+2026-07-08T21:53:13 | INFO     | http | [0cf1d409] GET /api/v1/auth/me → 200 (24.5ms)
+2026-07-08T21:55:37 | INFO     | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-07-08T21:55:37 | INFO     | sqlalchemy.engine.Engine | SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.full_name AS users_full_name, users.hashed_password AS users_hashed_password, users.`role` AS users_role, users.is_active AS users_is_active, users.last_login_at AS users_last_login_at, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = %(username_1)s 
+ LIMIT %(param_1)s
+2026-07-08T21:55:37 | INFO     | sqlalchemy.engine.Engine | [cached since 145.5s ago] {'username_1': 'analyst1', 'param_1': 1}
+2026-07-08T21:55:38 | INFO     | sqlalchemy.engine.Engine | UPDATE users SET last_login_at=%(last_login_at)s, updated_at=now() WHERE users.id = %(users_id)s
+2026-07-08T21:55:38 | INFO     | sqlalchemy.engine.Engine | [cached since 145.5s ago] {'last_login_at': datetime.datetime(2026, 7, 8, 16, 25, 38, 594270, tzinfo=datetime.timezone.utc), 'users_id': 5}
+2026-07-08T21:55:38 | INFO     | sqlalchemy.engine.Engine | COMMIT
+2026-07-08T21:55:38 | INFO     | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-07-08T21:55:38 | INFO     | sqlalchemy.engine.Engine | SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.full_name AS users_full_name, users.hashed_password AS users_hashed_password, users.`role` AS users_role, users.is_active AS users_is_active, users.last_login_at AS users_last_login_at, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.id = %(pk_1)s
+2026-07-08T21:55:38 | INFO     | sqlalchemy.engine.Engine | [cached since 145.4s ago] {'pk_1': 5}
+2026-07-08T21:55:38 | INFO     | services.auth_service | Login: analyst1  role=UserRole.crime_analyst
+2026-07-08T21:55:38 | INFO     | sqlalchemy.engine.Engine | ROLLBACK
+2026-07-08T21:55:38 | INFO     | http | [087d5b24] POST /api/v1/auth/login → 200 (883.5ms)
+2026-07-08T21:55:38 | INFO     | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-07-08T21:55:38 | INFO     | sqlalchemy.engine.Engine | SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.full_name AS users_full_name, users.hashed_password AS users_hashed_password, users.`role` AS users_role, users.is_active AS users_is_active, users.last_login_at AS users_last_login_at, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.id = %(pk_1)s
+2026-07-08T21:55:38 | INFO     | sqlalchemy.engine.Engine | [cached since 145.4s ago] {'pk_1': 5}
+2026-07-08T21:55:38 | INFO     | sqlalchemy.engine.Engine | ROLLBACK
+2026-07-08T21:55:38 | INFO     | http | [b91a49e6] GET /api/v1/auth/me → 200 (17.7ms)

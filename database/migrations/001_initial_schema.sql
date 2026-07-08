@@ -1,0 +1,15 @@
+-- =============================================================================
+-- DEPRECATED — 001_initial_schema.sql
+-- This file is superseded by the normalized migration pipeline:
+--   001_foundation.sql  → roles, districts, police_stations
+--   002_users_officers.sql
+--   003_crime_types_fir.sql
+--   004_persons.sql
+--   005_assets.sql
+--   006_evidence_investigation.sql
+--   007_indexes.sql
+--   008_views.sql
+--
+-- Use database/schema_complete.sql for a single-file full schema.
+-- Use database/run_all_migrations.sql to run the pipeline.
+-- =============================================================================

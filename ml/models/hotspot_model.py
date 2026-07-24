@@ -1,9 +1,8 @@
+import logging
 import numpy as np
-import pandas as pd
 from sklearn.cluster import DBSCAN
-from core.logging import get_logger
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class CrimeHotspotModel:
@@ -43,10 +42,13 @@ class CrimeHotspotModel:
 
             self.hotspots.append({
                 "cluster_id": int(label),
-                "latitude": float(center[0]),
-                "longitude": float(center[1]),
+                "center_lat": float(center[0]),
+                "center_lng": float(center[1]),
+                "lat": float(center[0]),
+                "lng": float(center[1]),
                 "radius_km": float(radius * 111.0),
-                "intensity": int(weight),
+                "count": int(weight),
+                "size": int(weight),
             })
 
         logger.info("Hotspot DBSCAN model trained. Discovered %d crime hotspots.", len(self.hotspots))

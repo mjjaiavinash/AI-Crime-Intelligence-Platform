@@ -62,7 +62,7 @@ export default function CrimeMap({ crimes = [], hotspots = [], center = [12.9716
           if (!hotspot.latitude || !hotspot.longitude) return null;
           
           // Color code by intensity
-          const color = hotspot.intensity > 5 ? "#ef4444" : "#f97316"; # Red vs Orange
+          const color = hotspot.intensity > 5 ? "#ef4444" : "#f97316"; // Red vs Orange
           
           return (
             <Circle

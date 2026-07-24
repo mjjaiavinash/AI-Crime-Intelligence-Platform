@@ -1,6 +1,9 @@
 import logging
 import sys
+import os
 from core.config import settings
+
+_LOG_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "logs", "app.log")
 
 
 def _get_level() -> int:
@@ -13,16 +16,16 @@ def configure_logging() -> None:
         if settings.APP_ENV == "development"
         else "%(asctime)s %(levelname)s %(name)s %(message)s"
     )
+    os.makedirs(os.path.dirname(_LOG_FILE), exist_ok=True)
     logging.basicConfig(
         level=_get_level(),
         format=fmt,
         datefmt="%Y-%m-%dT%H:%M:%S",
         handlers=[
             logging.StreamHandler(sys.stdout),
-            logging.FileHandler("logs/app.log", encoding="utf-8"),
+            logging.FileHandler(_LOG_FILE, encoding="utf-8"),
         ],
     )
-    # Silence noisy third-party loggers
     for noisy in ("uvicorn.access", "sqlalchemy.engine", "httpx"):
         logging.getLogger(noisy).setLevel(logging.WARNING)
 

@@ -7,6 +7,7 @@ from schemas.victim import VictimCreate, VictimUpdate
 from schemas.base import PaginatedResponse
 from core.exceptions import NotFoundException
 from core.logging import get_logger
+from ai.rag.sync import sync_victim, delete_victim as rag_delete_victim
 
 logger = get_logger(__name__)
 
@@ -43,6 +44,7 @@ def create_victim(db: Session, payload: VictimCreate) -> Victim:
     db.commit()
     db.refresh(v)
     logger.info("Victim created: id=%d fir_id=%d", v.id, v.fir_id)
+    sync_victim(v)
     return v
 
 
@@ -52,6 +54,7 @@ def update_victim(db: Session, victim_id: int, payload: VictimUpdate) -> Victim:
         setattr(v, field, value)
     db.commit()
     db.refresh(v)
+    sync_victim(v)
     return v
 
 
@@ -59,4 +62,5 @@ def delete_victim(db: Session, victim_id: int) -> None:
     v = get_victim(db, victim_id)
     db.delete(v)
     db.commit()
+    rag_delete_victim(victim_id)
     logger.info("Victim deleted: id=%d", victim_id)

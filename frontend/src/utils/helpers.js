@@ -1,5 +1,21 @@
 // Utility functions: date formatting, coordinate helpers, color mapping by crime type
 
+// Fix garbled UTF-8 characters caused by latin1/utf8 encoding mismatch
+export const cleanText = (str) => {
+  if (!str) return str
+  return str
+    .replace(/ÔÇö/g, '\u2014')
+    .replace(/ÔÇô/g, '\u2013')
+    .replace(/â€"/g, '\u2014')
+    .replace(/â€“/g, '\u2013')
+    .replace(/â€œ/g, '\u201c')
+    .replace(/â€/g, '\u201d')
+    .replace(/â€™/g, '\u2019')
+    .replace(/â€˜/g, '\u2018')
+    .replace(/â€¦/g, '\u2026')
+    .replace(/Â·/g, '\u00b7')
+}
+
 export const formatDate = (iso) =>
   new Date(iso).toLocaleDateString('en-US', { dateStyle: 'medium' })
 

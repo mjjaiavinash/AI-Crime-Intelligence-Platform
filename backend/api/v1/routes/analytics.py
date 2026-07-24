@@ -41,6 +41,6 @@ def by_type(db: Session = Depends(get_db)):
 
 
 @router.get("/network", response_model=NetworkGraph,
-            summary="Suspect network graph — all roles")
+          summary="Suspect network graph — all roles")
 def network_graph(db: Session = Depends(get_db)):
     return analytics_service.get_network_graph(db)

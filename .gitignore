@@ -1,35 +1,79 @@
-# Ignore sensitive and generated files
-
-# Environment
+# ── Secrets & Environment ──────────────────────────────────────────
 .env
 *.env
+!.env.example
+backend/.env
 
-# Python
+# ── Python ─────────────────────────────────────────────────────────
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
+*.pyd
+.Python
 .venv/
 venv/
+env/
 *.egg-info/
-
-# Node
-node_modules/
 dist/
-.vite/
+build/
+*.egg
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+*.cover
 
-# Database
+# ── Node / Frontend ────────────────────────────────────────────────
+node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/build/
+*.tsbuildinfo
+
+# ── Database ───────────────────────────────────────────────────────
 *.sqlite
+*.sqlite3
 *.db
-
-# Uploads / generated
-uploads/temp/
-reports/generated/
 database/chromadb/
 
-# IDE
+# ── Logs ───────────────────────────────────────────────────────────
+*.log
+backend/logs/
+ml/training_*.log
+
+# ── Uploads & Generated files ──────────────────────────────────────
+uploads/temp/
+uploads/evidence/
+uploads/datasets/
+reports/generated/
+reports/exports/
+
+# ── ML — large binary model files (tracked via Git LFS or excluded) 
+ml/models/*.pkl
+ml/Dataset Model/
+
+# ── IDE ────────────────────────────────────────────────────────────
 .vscode/
 .idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
 
-# OS
+# ── OS ─────────────────────────────────────────────────────────────
 .DS_Store
+.DS_Store?
+._*
 Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# ── Misc ───────────────────────────────────────────────────────────
+*.bak
+*.tmp
+*.temp
+fix_passwords.py
+fix_encoding.sql

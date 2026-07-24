@@ -12,20 +12,20 @@ export default function NetworkGraph({ nodes = [], edges = [] }) {
     const cyElements = [];
 
     nodes.forEach(node => {
-      let color = "#475569"; # Gray
+      let color = "#475569"; // Gray
       let shape = "ellipse";
 
       if (node.type === "suspect") {
-        color = "#ef4444"; # Red for suspects
+        color = "#ef4444"; // Red for suspects
         shape = "rectangle";
       } else if (node.type === "fir") {
-        color = "#3b82f6"; # Blue for crimes/FIRs
+        color = "#3b82f6"; // Blue for crimes/FIRs
         shape = "diamond";
       } else if (node.type === "vehicle") {
-        color = "#eab308"; # Yellow for vehicles
+        color = "#eab308"; // Yellow for vehicles
         shape = "triangle";
       } else if (node.type === "bank_account") {
-        color = "#10b981"; # Green for bank accounts
+        color = "#10b981"; // Green for bank accounts
         shape = "round-hexagon";
       }
 
@@ -35,7 +35,7 @@ export default function NetworkGraph({ nodes = [], edges = [] }) {
           "background-color": color,
           "shape": shape,
           "label": node.label,
-          "color": "#f1f5f9", # text label color
+          "color": "#f1f5f9", // text label color
           "font-size": "10px",
           "text-valign": "bottom",
           "text-margin-y": 4,
@@ -83,7 +83,7 @@ export default function NetworkGraph({ nodes = [], edges = [] }) {
         }
       ],
       layout: {
-        name: "cose", # Force-directed layout
+        name: "cose", // Force-directed layout
         padding: 40,
         animate: true,
         animationDuration: 500

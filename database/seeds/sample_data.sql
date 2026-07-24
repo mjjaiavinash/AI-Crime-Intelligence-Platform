@@ -38,15 +38,15 @@ ON DUPLICATE KEY UPDATE name = VALUES(name);
 
 
 -- ── users ─────────────────────────────────────────────────────────────────────
--- Passwords: admin1234 → $2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj/RK.s5uIom
---            officer1234 → $2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW
+-- Passwords: admin1234  → verified hash
+--            officer1234 → verified hash
 INSERT INTO users (id, role_id, username, email, hashed_password, full_name, phone, is_active) VALUES
-(1, 1, 'admin',     'admin@crimeiq.local',     '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj/RK.s5uIom', 'System Administrator', '9999000001', 1),
-(2, 2, 'supervisor1','supervisor1@crimeiq.local','$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj/RK.s5uIom', 'Priya Sharma',         '9999000002', 1),
-(3, 3, 'invest1',   'invest1@crimeiq.local',   '$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW', 'Rajesh Kumar',         '9999000003', 1),
-(4, 3, 'invest2',   'invest2@crimeiq.local',   '$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW', 'Sunita Verma',         '9999000004', 1),
-(5, 4, 'analyst1',  'analyst1@crimeiq.local',  '$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW', 'Amit Singh',           '9999000005', 1)
-ON DUPLICATE KEY UPDATE username = VALUES(username);
+(1, 1, 'admin',      'admin@crimeiq.local',      '$2b$12$g3FxYnMzbIF4YiL2doTvtOr7wjHHrUdC8PEIOaiMg/pVijDONcv.m', 'System Administrator', '9999000001', 1),
+(2, 2, 'supervisor1','supervisor1@crimeiq.local','$2b$12$g3FxYnMzbIF4YiL2doTvtOr7wjHHrUdC8PEIOaiMg/pVijDONcv.m', 'Priya Sharma',         '9999000002', 1),
+(3, 3, 'invest1',    'invest1@crimeiq.local',    '$2b$12$.QkoRsE3CCCU/NebKmwrlOxDpWPeinzqKwQBLgj239Y8VpEQFBy0K', 'Rajesh Kumar',         '9999000003', 1),
+(4, 3, 'invest2',    'invest2@crimeiq.local',    '$2b$12$.QkoRsE3CCCU/NebKmwrlOxDpWPeinzqKwQBLgj239Y8VpEQFBy0K', 'Sunita Verma',         '9999000004', 1),
+(5, 4, 'analyst1',   'analyst1@crimeiq.local',   '$2b$12$.QkoRsE3CCCU/NebKmwrlOxDpWPeinzqKwQBLgj239Y8VpEQFBy0K', 'Amit Singh',           '9999000005', 1)
+ON DUPLICATE KEY UPDATE hashed_password = VALUES(hashed_password), username = VALUES(username);
 
 
 -- ── officers ──────────────────────────────────────────────────────────────────

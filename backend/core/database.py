@@ -18,6 +18,7 @@ engine = create_engine(
     max_overflow=settings.DB_MAX_OVERFLOW,
     pool_recycle=settings.DB_POOL_RECYCLE,
     echo=settings.DEBUG,
+    connect_args={"charset": "utf8mb4"},
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

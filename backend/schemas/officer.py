@@ -57,3 +57,6 @@ class OfficerSummary(APIBase):
     department:   Optional[str]
     is_active:    bool
     station_id:   int
+    district_id:  int
+    user:         Optional[OfficerUserRead]
+    station:      Optional[OfficerStationRead]

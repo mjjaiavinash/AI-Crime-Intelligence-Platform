@@ -50,8 +50,12 @@ async def upload_and_ingest_document(
     """
     try:
         # Ensure uploads folder exists
-        os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
-        dest_path = os.path.join(settings.UPLOAD_DIR, file.filename)
+        upload_dir = settings.UPLOAD_DIR
+        if not os.path.isabs(upload_dir):
+            import pathlib
+            upload_dir = str(pathlib.Path(__file__).resolve().parent.parent.parent.parent / upload_dir.lstrip("../"))
+        os.makedirs(upload_dir, exist_ok=True)
+        dest_path = os.path.join(upload_dir, file.filename)
 
         with open(dest_path, "wb") as buffer:
             content = await file.read()

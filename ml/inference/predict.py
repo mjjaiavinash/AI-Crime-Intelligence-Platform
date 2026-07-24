@@ -1,14 +1,19 @@
+import os
+import sys
+import logging
 import numpy as np
 from sqlalchemy.orm import Session
 from sklearn.ensemble import IsolationForest
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+
 from models.fir import FIR
 from models.suspect import Suspect
 from models.crime_history import CrimeHistory
 from ml.models.hotspot_model import CrimeHotspotModel
 from ml.models.classifier_model import RecidivismClassifierModel
-from core.logging import get_logger
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 # Singletons for cached models
 _hotspot_model = CrimeHotspotModel()
@@ -55,10 +60,15 @@ def get_suspect_risk_score(db: Session, suspect_id: int) -> dict:
     else:
         level = "extreme"
 
+    threat_score = min(100, int(prob * 100))
     return {
         "suspect_id": suspect_id,
+        "recidivism_probability": prob,
         "probability": prob,
         "level": level,
+        "risk_classification": level,
+        "threat_score": threat_score,
+        "prior_offenses": prior_count,
         "prior_convictions": prior_count,
     }
 
@@ -97,8 +107,8 @@ def detect_crime_anomalies(db: Session) -> list:
                 "title": fir.title,
                 "latitude": float(fir.latitude) if fir.latitude else None,
                 "longitude": float(fir.longitude) if fir.longitude else None,
-                "incident_date": fir.incident_date,
-                "score": float(-iso.score_samples(X[i:i+1])[0]) # anomaly score
+                "incident_date": str(fir.incident_date),
+                "anomaly_score": round(float(-iso.score_samples(X[i:i+1])[0]), 4),
             })
 
-    return sorted(anomalies, key=lambda x: x["score"], reverse=True)
+    return sorted(anomalies, key=lambda x: x["anomaly_score"], reverse=True)

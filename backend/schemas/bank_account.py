@@ -53,8 +53,13 @@ class BankAccountRead(BankAccountBase):
 
 class BankAccountSummary(APIBase):
     id: int
+    suspect_id: Optional[int] = None
+    fir_id: Optional[int] = None
     account_number: str
     account_holder_name: str
     bank_name: str
+    account_type: AccountType
     freeze_status: FreezeStatus
     flagged_amount: Optional[Decimal] = None
+    transaction_count: Optional[int] = None
+    notes: Optional[str] = None

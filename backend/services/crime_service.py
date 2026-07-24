@@ -6,6 +6,7 @@ from schemas.crime import CrimeCreate, CrimeUpdate
 from schemas.base import PaginatedResponse
 from core.exceptions import NotFoundException
 from core.logging import get_logger
+from ai.rag.sync import sync_crime, delete_crime as rag_delete_crime
 import math
 
 logger = get_logger(__name__)
@@ -56,6 +57,7 @@ def create_crime(db: Session, payload: CrimeCreate, reporter_id: int) -> Crime:
     db.commit()
     db.refresh(crime)
     logger.info("Crime created: id=%d title=%r", crime.id, crime.title)
+    sync_crime(crime)
     return crime
 
 
@@ -65,6 +67,7 @@ def update_crime(db: Session, crime_id: int, payload: CrimeUpdate) -> Crime:
         setattr(crime, field, value)
     db.commit()
     db.refresh(crime)
+    sync_crime(crime)
     return crime
 
 
@@ -72,4 +75,5 @@ def delete_crime(db: Session, crime_id: int) -> None:
     crime = get_crime(db, crime_id)
     db.delete(crime)
     db.commit()
+    rag_delete_crime(crime_id)
     logger.info("Crime deleted: id=%d", crime_id)

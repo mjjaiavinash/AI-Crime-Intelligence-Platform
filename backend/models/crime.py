@@ -25,9 +25,8 @@ class Crime(Base, TimestampMixin):
     location_name: Mapped[Optional[str]] = mapped_column(String(255))
     occurred_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     status: Mapped[CrimeStatus] = mapped_column(Enum(CrimeStatus), default=CrimeStatus.open, nullable=False, index=True)
-    reported_by: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"))
+    reported_by: Mapped[Optional[int]] = mapped_column(nullable=True)
 
-    reporter: Mapped["User"] = relationship("User", back_populates="crimes")
 
     def __repr__(self) -> str:
         return f"<Crime id={self.id} title={self.title!r} status={self.status}>"

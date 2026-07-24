@@ -15,18 +15,32 @@ if backend_dir not in sys.path:
     sys.path.insert(0, backend_dir)
 
 from functools import lru_cache
-from typing import List
+from typing import List, Any
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=os.path.join(backend_dir, ".env"),
+        env_file_encoding="utf-8",
+        extra="ignore"
+    )
 
     # ── App ──────────────────────────────────────────────────────────────────
     APP_ENV: str = "development"
     APP_NAME: str = "AI Crime Intelligence Platform"
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = False
+
+    @field_validator("DEBUG", mode="before")
+    @classmethod
+    def parse_debug(cls, v: Any) -> bool:
+        if isinstance(v, bool):
+            return v
+        if isinstance(v, str):
+            return v.lower() in ("true", "1", "yes")
+        return bool(v)
 
     # ── MySQL ─────────────────────────────────────────────────────────────────
     DB_HOST: str = "localhost"
@@ -44,6 +58,7 @@ class Settings(BaseSettings):
         return (
             f"mysql+pymysql://{self.DB_USER}:{quote_plus(self.DB_PASSWORD)}"
             f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+            f"?charset=utf8mb4"
         )
 
     # ── JWT ───────────────────────────────────────────────────────────────────
@@ -54,11 +69,20 @@ class Settings(BaseSettings):
 
     # ── Groq ──────────────────────────────────────────────────────────────────
     GROQ_API_KEY: str = ""
-    GROQ_MODEL: str = "llama3-70b-8192"
+    GROQ_MODEL: str = "llama-3.1-8b-instant"
 
     # ── ChromaDB ──────────────────────────────────────────────────────────────
     CHROMA_PERSIST_DIR: str = "../database/chromadb"
     CHROMA_COLLECTION_NAME: str = "crime_documents"
+
+    @property
+    def CHROMA_PERSIST_PATH(self) -> str:
+        """Absolute path to ChromaDB persist directory."""
+        import os
+        path = self.CHROMA_PERSIST_DIR
+        if not os.path.isabs(path):
+            path = os.path.abspath(os.path.join(backend_dir, path))
+        return path
 
     # ── CORS ──────────────────────────────────────────────────────────────────
     ALLOWED_ORIGINS: List[str] = ["http://localhost:5173", "http://localhost:3000"]

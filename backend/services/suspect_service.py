@@ -19,9 +19,10 @@ def list_suspects(
     arrest_status: Optional[str] = None,
     threat_level: Optional[str] = None,
 ) -> PaginatedResponse:
+    from models.suspect import SuspectFIR
     q = db.query(Suspect)
     if fir_id:
-        q = q.filter(Suspect.fir_id == fir_id)
+        q = q.join(SuspectFIR, SuspectFIR.suspect_id == Suspect.id).filter(SuspectFIR.fir_id == fir_id)
     if arrest_status:
         q = q.filter(Suspect.arrest_status == arrest_status)
     if threat_level:
@@ -44,11 +45,18 @@ def get_suspect(db: Session, suspect_id: int) -> Suspect:
 def create_suspect(db: Session, payload: SuspectCreate) -> Suspect:
     if not db.get(FIR, payload.fir_id):
         raise NotFoundException("FIR")
-    s = Suspect(**payload.model_dump())
+    data = payload.model_dump()
+    fir_id = data.pop("fir_id")
+    role_in_case = data.pop("role_in_case", None)
+    s = Suspect(**data)
     db.add(s)
+    db.flush()  # get s.id before commit
+    from models.suspect import SuspectFIR
+    link = SuspectFIR(suspect_id=s.id, fir_id=fir_id, role_in_case=role_in_case)
+    db.add(link)
     db.commit()
     db.refresh(s)
-    logger.info("Suspect created: id=%d fir_id=%d", s.id, s.fir_id)
+    logger.info("Suspect created: id=%d fir_id=%d", s.id, fir_id)
     return s
 
 

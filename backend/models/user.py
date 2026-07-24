@@ -27,7 +27,6 @@ class User(Base, TimestampMixin):
     is_active:       Mapped[bool]           = mapped_column(Boolean, default=True, nullable=False)
     last_login_at:   Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
 
-    crimes: Mapped[list["Crime"]] = relationship("Crime", back_populates="reporter", lazy="select")
 
     def __repr__(self) -> str:
         return f"<User id={self.id} username={self.username!r} role={self.role}>"

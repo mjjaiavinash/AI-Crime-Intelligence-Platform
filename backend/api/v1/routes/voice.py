@@ -37,27 +37,43 @@ def text_to_speech(
 
 @router.post(
     "/stt",
-    summary="Speech-to-Text (STT) transcriber stub — all roles",
+    summary="Speech-to-Text (STT) transcriber — all roles",
 )
 async def speech_to_text(
     file: UploadFile = File(...),
 ):
     """
-    Transcribes uploaded audio files.
-    Note: For production, we recommend browser-based Web Speech API recognition for zero-latency,
-    but this endpoint is provided for backend-based processing fallback.
+    Transcribes uploaded audio (WAV/MP3) using Google Speech Recognition.
+    Supports English and Kannada audio files.
     """
+    import tempfile, os, speech_recognition as sr
     try:
         content = await file.read()
         logger.info("Received audio file %s (%d bytes) for transcription", file.filename, len(content))
-        
-        # In demo context, we mock a quick transcription or return a placeholder.
-        # Browser-based speech recognition is handled in real-time in the UI.
+
+        suffix = os.path.splitext(file.filename)[-1] or ".wav"
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+            tmp.write(content)
+            tmp_path = tmp.name
+
+        recognizer = sr.Recognizer()
+        with sr.AudioFile(tmp_path) as source:
+            audio = recognizer.record(source)
+
+        os.unlink(tmp_path)
+
+        transcription = recognizer.recognize_google(audio)
+        logger.info("STT transcription successful: %r", transcription[:60])
         return {
             "status": "success",
-            "transcription": "Sample transcript (Audio processed successfully on server)",
+            "transcription": transcription,
             "filename": file.filename,
         }
+    except sr.UnknownValueError:
+        return {"status": "success", "transcription": "", "filename": file.filename, "note": "Could not understand audio"}
+    except sr.RequestError as e:
+        logger.error("Google STT API error: %s", e)
+        raise HTTPException(status_code=503, detail=f"Speech recognition service unavailable: {e}")
     except Exception as e:
         logger.error("STT transcription failed: %s", e)
         raise HTTPException(status_code=500, detail=str(e))

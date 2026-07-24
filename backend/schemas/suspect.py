@@ -48,7 +48,6 @@ class SuspectUpdate(APIBase):
 
 class SuspectRead(APIBase):
     id:                   int
-    fir_id:               int
     full_name:            Optional[str]
     alias:                Optional[str]
     gender:               str
@@ -67,7 +66,6 @@ class SuspectRead(APIBase):
     gang_affiliation:     Optional[str]
     threat_level:         ThreatLevel
     arrest_status:        ArrestStatus
-    role_in_case:         Optional[str]
     arrested_at:          Optional[datetime]
     created_at:           datetime
     updated_at:           datetime
@@ -75,9 +73,12 @@ class SuspectRead(APIBase):
 
 class SuspectSummary(APIBase):
     id:            int
-    fir_id:        int
     full_name:     Optional[str]
     alias:         Optional[str]
+    gender:        str
+    age_estimated: Optional[int]
     threat_level:  ThreatLevel
     arrest_status: ArrestStatus
+    gang_affiliation: Optional[str]
+    is_known_criminal: bool
     created_at:    datetime

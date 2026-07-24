@@ -56,15 +56,30 @@ _bearer = HTTPBearer(auto_error=False)
     summary="Register a new user",
     tags=["Auth"],
 )
-def register(payload: UserCreate, db: Session = Depends(get_db)):
+def register(
+    payload:      UserCreate,
+    db:           Session = Depends(get_db),
+    credentials:  HTTPAuthorizationCredentials = Depends(_bearer),
+):
     """
-    Create a new account. Default role is **investigator**.
+    Create a new account.
+    - Anyone can register as **investigator** or **crime_analyst**.
+    - Creating **admin** or **supervisor** accounts requires an existing admin token.
 
     Password rules:
     - Minimum 8 characters
     - At least one uppercase letter
     - At least one digit
     """
+    privileged_roles = {UserRole.admin, UserRole.supervisor}
+    if payload.role in privileged_roles:
+        from core.security import decode_token
+        from core.exceptions import UnauthorizedException, ForbiddenException
+        if not credentials:
+            raise UnauthorizedException("Authentication required to create privileged accounts.")
+        token_data = decode_token(credentials.credentials)
+        if token_data.get("role") != "admin":
+            raise ForbiddenException("Only admins can create admin or supervisor accounts.")
     return auth_service.register_user(db, payload)
 
 

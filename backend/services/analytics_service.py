@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import func, text
-from models.crime import Crime, CrimeStatus
-from models.suspect import Suspect
+from sqlalchemy import func
+from models.fir import FIR, FIRStatus
+from models.crime_type import CrimeType
+from models.suspect import Suspect, SuspectFIR
 from schemas.analytics import (
     AnalyticsSummary, HotspotPoint, TrendPoint,
     CrimeTypeCount, NetworkGraph, NetworkNode, NetworkEdge,
@@ -12,10 +13,14 @@ logger = get_logger(__name__)
 
 
 def get_summary(db: Session) -> AnalyticsSummary:
-    total = db.query(func.count(Crime.id)).scalar() or 0
-    open_c = db.query(func.count(Crime.id)).filter(Crime.status == CrimeStatus.open).scalar() or 0
-    closed = db.query(func.count(Crime.id)).filter(Crime.status == CrimeStatus.closed).scalar() or 0
-    invest = db.query(func.count(Crime.id)).filter(Crime.status == CrimeStatus.under_investigation).scalar() or 0
+    total  = db.query(func.count(FIR.id)).scalar() or 0
+    open_c = db.query(func.count(FIR.id)).filter(FIR.status == FIRStatus.filed).scalar() or 0
+    closed = db.query(func.count(FIR.id)).filter(
+        FIR.status.in_([FIRStatus.closed_true, FIRStatus.closed_false])
+    ).scalar() or 0
+    invest = db.query(func.count(FIR.id)).filter(
+        FIR.status == FIRStatus.under_investigation
+    ).scalar() or 0
 
     return AnalyticsSummary(
         total_crimes=total,
@@ -31,13 +36,13 @@ def get_summary(db: Session) -> AnalyticsSummary:
 def get_hotspots(db: Session, limit: int = 20) -> list[HotspotPoint]:
     rows = (
         db.query(
-            func.round(Crime.latitude, 2).label("lat"),
-            func.round(Crime.longitude, 2).label("lng"),
-            func.count(Crime.id).label("count"),
+            func.round(FIR.latitude, 2).label("lat"),
+            func.round(FIR.longitude, 2).label("lng"),
+            func.count(FIR.id).label("count"),
         )
-        .filter(Crime.latitude.isnot(None), Crime.longitude.isnot(None))
+        .filter(FIR.latitude.isnot(None), FIR.longitude.isnot(None))
         .group_by("lat", "lng")
-        .order_by(func.count(Crime.id).desc())
+        .order_by(func.count(FIR.id).desc())
         .limit(limit)
         .all()
     )
@@ -47,10 +52,10 @@ def get_hotspots(db: Session, limit: int = 20) -> list[HotspotPoint]:
 def get_trends(db: Session) -> list[TrendPoint]:
     rows = (
         db.query(
-            func.date_format(Crime.occurred_at, "%Y-%m").label("month"),
-            func.count(Crime.id).label("total"),
+            func.date_format(FIR.incident_date, "%Y-%m").label("month"),
+            func.count(FIR.id).label("total"),
         )
-        .filter(Crime.occurred_at.isnot(None))
+        .filter(FIR.incident_date.isnot(None))
         .group_by("month")
         .order_by("month")
         .all()
@@ -60,41 +65,44 @@ def get_trends(db: Session) -> list[TrendPoint]:
 
 def get_by_type(db: Session) -> list[CrimeTypeCount]:
     rows = (
-        db.query(Crime.crime_type, func.count(Crime.id).label("total"))
-        .filter(Crime.crime_type.isnot(None))
-        .group_by(Crime.crime_type)
-        .order_by(func.count(Crime.id).desc())
+        db.query(CrimeType.name.label("crime_type"), func.count(FIR.id).label("total"))
+        .join(FIR, FIR.crime_type_id == CrimeType.id)
+        .group_by(CrimeType.name)
+        .order_by(func.count(FIR.id).desc())
         .all()
     )
     return [CrimeTypeCount(crime_type=r.crime_type, total=r.total) for r in rows]
 
 
 def get_network_graph(db: Session) -> NetworkGraph:
-    """Builds a Cytoscape-compatible node/edge graph of crime-suspect relationships."""
-    crimes = db.query(Crime).limit(100).all()
-    suspects = db.query(Suspect).all()
+    """Builds a Cytoscape-compatible node/edge graph of suspect-FIR relationships."""
+    from models.fir import FIR
+
+    suspects = db.query(Suspect).limit(100).all()
+    links = db.query(SuspectFIR).all()
+    fir_ids = {lnk.fir_id for lnk in links}
+    firs = {f.id: f for f in db.query(FIR).filter(FIR.id.in_(fir_ids)).all()} if fir_ids else {}
 
     nodes: list[NetworkNode] = []
     edges: list[NetworkEdge] = []
     seen: set[str] = set()
 
-    for crime in crimes:
-        nid = f"crime-{crime.id}"
+    for fir in firs.values():
+        nid = f"fir-{fir.id}"
         if nid not in seen:
-            nodes.append(NetworkNode(id=nid, label=crime.title, type="crime"))
+            nodes.append(NetworkNode(id=nid, label=fir.fir_number, type="crime"))
             seen.add(nid)
-        if crime.location_name:
-            lid = f"loc-{crime.location_name}"
-            if lid not in seen:
-                nodes.append(NetworkNode(id=lid, label=crime.location_name, type="location"))
-                seen.add(lid)
-            edges.append(NetworkEdge(source=nid, target=lid, label="occurred_at"))
 
     for suspect in suspects:
         sid = f"suspect-{suspect.id}"
         if sid not in seen:
-            nodes.append(NetworkNode(id=sid, label=suspect.name or "Unknown", type="suspect"))
+            nodes.append(NetworkNode(id=sid, label=suspect.full_name or "Unknown", type="suspect"))
             seen.add(sid)
-        edges.append(NetworkEdge(source=sid, target=f"crime-{suspect.crime_id}", label="linked_to"))
+
+    for lnk in links:
+        fir_nid = f"fir-{lnk.fir_id}"
+        sus_nid = f"suspect-{lnk.suspect_id}"
+        if fir_nid in seen and sus_nid in seen:
+            edges.append(NetworkEdge(source=sus_nid, target=fir_nid, label=lnk.role_in_case or "linked_to"))
 
     return NetworkGraph(nodes=nodes, edges=edges)

@@ -1,6 +1,6 @@
 <div align="center">
 
-# CrimeIQ — AI Crime Intelligence Platform
+#  CrimeIQ — AI Crime Intelligence Platform
 
 ### Built for Karnataka State Police · Datathon Project
 
@@ -10,30 +10,29 @@
 [![Groq](https://img.shields.io/badge/Groq-LLaMA--3-F55036?style=flat)](https://console.groq.com)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4-38BDF8?style=flat&logo=tailwindcss)](https://tailwindcss.com)
 
-**CrimeIQ** is an AI-powered, full-stack crime intelligence platform built for the Karnataka State Police. It unifies real-time analytics, RAG-based conversational AI, machine learning predictions, network graph visualization, and secure case management into a single platform for law enforcement.
+> An AI-powered, full-stack crime intelligence platform that brings together real-time analytics, RAG-based chat, machine learning predictions, network graph visualization, and secure case management — all in one unified system for law enforcement.
 
 </div>
 
 ---
 
-## Table of Contents
+##  Table of Contents
 
-- [Overview](#overview)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [User Roles](#user-roles)
-- [ML Models](#ml-models)
-- [API Documentation](#api-documentation)
-- [Environment Variables](#environment-variables)
-- [Database Schema](#database-schema)
-- [Docker](#docker)
-- [License](#license)
+- [Overview](#-overview)
+- [Screenshots](#-screenshots)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Getting Started](#-getting-started)
+- [User Roles](#-user-roles)
+- [ML Models](#-ml-models)
+- [API Documentation](#-api-documentation)
+- [Environment Variables](#-environment-variables)
+- [Demo Credentials](#-demo-credentials)
 
 ---
 
-## Overview
+##  Overview
 
 CrimeIQ is a comprehensive crime intelligence platform designed for the Karnataka State Police. It addresses the challenge of fragmented crime data by providing a single, secure platform where investigators, analysts, supervisors, and administrators can collaborate, analyze, and act on crime intelligence in real time.
 
@@ -45,30 +44,30 @@ The platform combines:
 
 ---
 
-## Features
+##  Features
 
-### Authentication & Security
+###  Authentication & Security
 - JWT-based authentication with access + refresh tokens
 - Role-based access control (4 roles with different permissions)
 - Account enable/disable by admin
 - All sessions monitored and logged
 - Rate limiting and error handling middleware
 
-### Case Management (Investigator)
+###  Case Management (Investigator)
 - **FIR Management** — File, view, search, and paginate First Information Reports
 - **Cases** — Track all cases with status (Filed → Under Investigation → Closed)
 - **Suspects** — Register suspect profiles with threat levels, arrest status, gang affiliations
 - **Victims** — Record victim details with injury classification and anonymous option
 - **Evidence** — Chain of custody tracking from collection → lab → filing
 
-### AI Features
+###  AI Features
 - **AI Investigation Assistant** — Select any FIR and get an AI-generated case intelligence summary using Groq LLaMA-3, analyzing all linked suspects, victims, and evidence
 - **RAG Chat** — Ask natural language questions about crime data in English or Kannada. Powered by Groq LLaMA-3 + ChromaDB vector store
 - **Voice Input** — Hold-to-speak microphone input in both English and Kannada
 - **Text-to-Speech** — AI responses can be read aloud
 - **PDF Export** — Export chat sessions as PDF reports
 
-### Analytics (Crime Analyst)
+###  Analytics (Crime Analyst)
 - **Dashboard** — Monthly crime trends, crime-by-type breakdown
 - **Heatmaps** — Geographic crime density visualization
 - **Trends** — Time-series analysis across districts and crime types
@@ -76,25 +75,25 @@ The platform combines:
 - **Sociological Analysis** — Demographic and socioeconomic crime correlations
 - **Network Analysis** — Analyst-level network graph exploration
 
-### Machine Learning (Crime Analyst)
+###  Machine Learning (Crime Analyst)
 - **Crime Hotspot Detection** — DBSCAN clustering to identify high-crime geographic zones
 - **Repeat Offender Prediction** — Random Forest model to predict recidivism likelihood
 - **Crime Classification** — XGBoost model to classify crime type from incident features
 - Model performance evaluation with confusion matrices, ROC curves, SHAP plots
 
-### Visualization
+###  Visualization
 - **Network Graphs** — Cytoscape.js-powered graphs showing relationships between suspects, victims, FIRs, and officers
 - **Crime Maps** — Leaflet.js interactive maps with crime incident markers
 - **Financial Network** — Visualize financial connections between suspects
 
-### Supervisor Features
+###  Supervisor Features
 - State-level crime overview dashboard
 - Police station risk assessment (based on real crime counts)
 - Officer management and resource allocation
 - High-risk zone monitoring
 - State-wide crime trend charts
 
-### Admin Features
+###  Admin Features
 - User management — create, enable/disable users across all roles
 - Role assignment with pill selector UI
 - Crime type management
@@ -104,7 +103,7 @@ The platform combines:
 
 ---
 
-## Tech Stack
+##  Tech Stack
 
 | Layer | Technology | Purpose |
 |-------|-----------|---------|
@@ -130,13 +129,13 @@ The platform combines:
 
 ---
 
-## Project Structure
+##  Project Structure
 
 ```
 ai-crime-intelligence-platform/
 │
-├── backend/                           # FastAPI application
-│   ├── api/v1/routes/                 # REST API endpoints
+├──  backend/                        # FastAPI application
+│   ├──  api/v1/routes/              # REST API endpoints
 │   │   ├── auth.py                    # Login, register, user management
 │   │   ├── fir.py                     # FIR CRUD operations
 │   │   ├── suspects.py                # Suspect management
@@ -151,20 +150,20 @@ ai-crime-intelligence-platform/
 │   │   ├── officers.py                # Officer management
 │   │   └── reports.py                 # Report generation
 │   │
-│   ├── core/                          # App configuration
+│   ├──  core/                       # App configuration
 │   │   ├── config.py                  # Settings with lru_cache
 │   │   ├── database.py                # SQLAlchemy engine + session
 │   │   ├── security.py                # Password hashing, JWT
 │   │   ├── exceptions.py              # Custom exception classes
 │   │   └── logging.py                 # Structured logging setup
 │   │
-│   ├── middleware/                    # Request/response middleware
+│   ├──  middleware/                 # Request/response middleware
 │   │   ├── auth_middleware.py         # JWT validation middleware
 │   │   ├── rate_limit.py              # API rate limiting
 │   │   ├── error_handler.py           # Global error handling
 │   │   └── logging_middleware.py      # Request logging
 │   │
-│   ├── models/                        # SQLAlchemy ORM models
+│   ├──  models/                     # SQLAlchemy ORM models
 │   │   ├── user.py                    # User accounts
 │   │   ├── fir.py                     # First Information Reports
 │   │   ├── suspect.py                 # Suspect profiles
@@ -175,77 +174,77 @@ ai-crime-intelligence-platform/
 │   │   ├── police_station.py          # Police stations
 │   │   └── investigation.py           # Investigation records
 │   │
-│   ├── schemas/                       # Pydantic request/response models
-│   ├── services/                      # Business logic layer
-│   ├── utils/                         # Helper functions
+│   ├──  schemas/                    # Pydantic request/response models
+│   ├──  services/                   # Business logic layer
+│   ├──  utils/                      # Helper functions
 │   ├── main.py                        # FastAPI app entry point
 │   ├── .env.example                   # Environment variable template
 │   └── Dockerfile                     # Docker configuration
 │
-├── frontend/                          # React + Vite application
-│   ├── public/
+├──  frontend/                       # React + Vite application
+│   ├──  public/
 │   │   ├── Background_image.png       # Login page background
 │   │   └── favicon.svg                # Shield icon favicon
 │   │
-│   └── src/
-│       ├── components/
-│       │   ├── common/                # Reusable UI components
+│   └──  src/
+│       ├──  components/
+│       │   ├──  common/             # Reusable UI components
 │       │   │   ├── StatCard.jsx       # Metric cards with trend badges
 │       │   │   ├── Table.jsx          # Data table with skeleton loading
 │       │   │   ├── Modal.jsx          # Accessible modal dialog
 │       │   │   ├── PageHeader.jsx     # Page title with accent bar
 │       │   │   ├── Badge.jsx          # Status/role color badges
 │       │   │   └── Spinner.jsx        # Loading spinner
-│       │   ├── layout/
+│       │   ├──  layout/
 │       │   │   ├── Navbar.jsx         # Top nav with notifications
 │       │   │   ├── sidebars/          # Role-specific sidebars (4 roles)
 │       │   │   └── *Layout.jsx        # Layout wrappers per role
-│       │   ├── charts/                # Recharts wrappers
-│       │   ├── map/                   # Leaflet crime map
-│       │   └── graph/                 # Cytoscape network graph
+│       │   ├──  charts/             # Recharts wrappers
+│       │   ├──  map/                # Leaflet crime map
+│       │   └──  graph/              # Cytoscape network graph
 │       │
-│       ├── pages/
-│       │   ├── auth/                  # Login page
-│       │   ├── admin/                 # Admin dashboard, users, settings
-│       │   ├── investigator/          # FIR, cases, suspects, evidence, victims
+│       ├──  pages/
+│       │   ├──  auth/               # Login page
+│       │   ├──  admin/              # Admin dashboard, users, settings
+│       │   ├──  investigator/       # FIR, cases, suspects, evidence, victims
 │       │   │                          # AI assistant, network, timeline
-│       │   ├── analyst/               # ML, trends, heatmaps, forecasting
-│       │   └── supervisor/            # State overview, officers, high-risk
+│       │   ├──  analyst/            # ML, trends, heatmaps, forecasting
+│       │   └──  supervisor/         # State overview, officers, high-risk
 │       │
-│       ├── services/                  # Axios API service layer
-│       ├── store/                     # Zustand auth store
-│       └── utils/                     # helpers.js, exportPDF.js
+│       ├──  services/               # Axios API service layer
+│       ├──  store/                  # Zustand auth store
+│       └──  utils/                  # helpers.js, exportPDF.js
 │
-├── ai/                                # AI / RAG layer
-│   ├── groq/                          # Groq LLM client wrapper
-│   ├── rag/                           # ChromaDB ingestion + retrieval
+├──  ai/                             # AI / RAG layer
+│   ├──  groq/                       # Groq LLM client wrapper
+│   ├──  rag/                        # ChromaDB ingestion + retrieval
 │   │   ├── ingestion.py               # Document ingestion pipeline
 │   │   ├── retriever.py               # Semantic search retriever
 │   │   ├── chroma_client.py           # ChromaDB client setup
 │   │   └── seed_knowledge.py          # Seed initial knowledge base
-│   ├── embeddings/                    # Sentence transformer embedder
-│   ├── pipelines/                     # RAG and report pipelines
-│   └── prompts/                       # LLM prompt templates
+│   ├──  embeddings/                 # Sentence transformer embedder
+│   ├──  pipelines/                  # RAG and report pipelines
+│   └──  prompts/                    # LLM prompt templates
 │
-├── ml/                                # Machine learning
-│   ├── models/                        # Trained .pkl model files
+├──  ml/                             # Machine learning
+│   ├──  models/                     # Trained .pkl model files
 │   │   ├── crime_classifier_model.pkl # XGBoost crime classifier
 │   │   ├── hotspot_model.pkl          # Hotspot prediction model
 │   │   └── repeat_offender_model.pkl  # Recidivism prediction model
-│   ├── training/                      # Model training scripts
-│   ├── inference/                     # Prediction scripts
-│   ├── preprocessing/                 # Data preprocessing pipelines
-│   └── evaluation/                    # Confusion matrices, ROC, SHAP plots
+│   ├──  training/                   # Model training scripts
+│   ├──  inference/                  # Prediction scripts
+│   ├──  preprocessing/              # Data preprocessing pipelines
+│   └──  evaluation/                 # Confusion matrices, ROC, SHAP plots
 │
-├── database/                          # Database layer
-│   ├── migrations/                    # SQL migration files (001-008)
-│   ├── seeds/                         # Sample data for development
-│   ├── queries/                       # Analytics SQL queries
+├──  database/                       # Database layer
+│   ├──  migrations/                 # SQL migration files (001–008)
+│   ├──  seeds/                      # Sample data for development
+│   ├──  queries/                    # Analytics SQL queries
 │   └── ERD.md                         # Entity Relationship Diagram
 │
-├── auth/                              # JWT token utilities
-├── config/                            # Logging and alembic config
-├── docs/                              # API reference + architecture docs
+├──  auth/                           # JWT token utilities
+├──  config/                         # Logging and alembic config
+├──  docs/                           # API reference + architecture docs
 ├── .env.example                       # Root environment template
 ├── .gitignore                         # Comprehensive ignore rules
 ├── .gitattributes                     # Line ending normalization
@@ -255,7 +254,7 @@ ai-crime-intelligence-platform/
 
 ---
 
-## Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -386,11 +385,11 @@ npm run dev
 ```
 
 - App runs at: `http://localhost:5173`
-- Automatically proxies `/api` to `http://localhost:8000`
+- Automatically proxies `/api` → `http://localhost:8000`
 
 ---
 
-## User Roles
+##  User Roles
 
 | Role | Username | Password | Access |
 |------|----------|----------|--------|
@@ -435,7 +434,7 @@ crime_analyst
 
 ---
 
-## ML Models
+##  ML Models
 
 Three machine learning models are pre-trained and included:
 
@@ -474,7 +473,7 @@ Training datasets are in `ml/Dataset Model/` (Excel files, 100K+ rows each).
 
 ---
 
-## API Documentation
+##  API Documentation
 
 Full interactive API docs available at `http://localhost:8000/docs` when backend is running.
 
@@ -502,7 +501,7 @@ Full interactive API docs available at `http://localhost:8000/docs` when backend
 
 ---
 
-## Environment Variables
+##  Environment Variables
 
 | Variable | Required | Description |
 |----------|----------|-------------|
@@ -513,18 +512,18 @@ Full interactive API docs available at `http://localhost:8000/docs` when backend
 | `DB_PASSWORD` | Yes | MySQL password |
 | `JWT_SECRET` | Yes | Secret key for JWT signing (min 32 chars) |
 | `JWT_ALGORITHM` | No | JWT algorithm (default: `HS256`) |
-| `JWT_ACCESS_EXPIRE_MINUTES` | No | Token expiry in minutes (default: `60`) |
-| `JWT_REFRESH_EXPIRE_DAYS` | No | Refresh token expiry in days (default: `7`) |
-| `GROQ_API_KEY` | Yes | Groq API key from [console.groq.com](https://console.groq.com) |
-| `GROQ_MODEL` | No | LLM model name (default: `llama-3.3-70b-versatile`) |
-| `CHROMA_PERSIST_DIR` | No | ChromaDB storage path (default: `../database/chromadb`) |
-| `ALLOWED_ORIGINS` | No | CORS allowed origins (default: `http://localhost:5173`) |
-| `UPLOAD_DIR` | No | File upload directory (default: `../uploads`) |
+| `JWT_ACCESS_EXPIRE_MINUTES` | No | Token expiry (default: `60`) |
+| `JWT_REFRESH_EXPIRE_DAYS` | No | Refresh token expiry (default: `7`) |
+| `GROQ_API_KEY` | Yes | Groq API key from console.groq.com |
+| `GROQ_MODEL` | No | LLM model (default: `llama-3.3-70b-versatile`) |
+| `CHROMA_PERSIST_DIR` | No | ChromaDB storage path |
+| `ALLOWED_ORIGINS` | No | CORS origins (default: `localhost:5173`) |
+| `UPLOAD_DIR` | No | File upload directory |
 | `MAX_UPLOAD_MB` | No | Max upload size in MB (default: `20`) |
 
 ---
 
-## Database Schema
+##  Database Schema
 
 The database has 15+ tables covering:
 
@@ -547,7 +546,7 @@ See `database/ERD.md` for the full Entity Relationship Diagram.
 
 ---
 
-## Docker
+##  Docker (Backend)
 
 ```bash
 cd backend
@@ -557,15 +556,15 @@ docker run -p 8000:8000 --env-file .env crimeiq-backend
 
 ---
 
-## License
+##  License
 
-This project was built for the **Karnataka State Police Datathon**.
+This project was built for the **Karnataka State Police Datathon**.  
 For educational and demonstration purposes only.
 
 ---
 
 <div align="center">
 
-Built with care for Karnataka State Police · CrimeIQ Intelligence Platform
+Built with  for Karnataka State Police · CrimeIQ Intelligence Platform
 
 </div>

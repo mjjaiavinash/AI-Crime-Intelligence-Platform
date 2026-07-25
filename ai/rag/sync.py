@@ -64,3 +64,21 @@ def delete_crime(crime_id: int):
 
 def delete_victim(victim_id: int):
     _delete(f"victim_{victim_id}")
+
+
+def sync_fir(fir):
+    doc_id = f"fir_{fir.id}"
+    text = (
+        f"FIR ID: {fir.id}. FIR Number: {fir.fir_number}. "
+        f"Title: {fir.title}. Status: {fir.status}. "
+        f"Location: {getattr(fir, 'location_name', 'N/A')}. "
+        f"Description: {getattr(fir, 'description', '')}. "
+        f"Incident Date: {getattr(fir, 'incident_date', '')}. "
+        f"Crime Type: {fir.crime_type_rel.name if getattr(fir, 'crime_type_rel', None) else 'N/A'}. "
+        f"Station: {fir.station.name if getattr(fir, 'station', None) else 'N/A'}."
+    )
+    _upsert(doc_id, text, {"source": "fir", "fir_id": fir.id})
+
+
+def delete_fir(fir_id: int):
+    _delete(f"fir_{fir_id}")

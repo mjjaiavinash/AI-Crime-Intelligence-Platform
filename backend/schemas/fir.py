@@ -118,6 +118,8 @@ class FIRSummary(APIBase):
     status:        FIRStatus
     incident_date: datetime
     location_name: Optional[str]
+    latitude:      Optional[float]
+    longitude:     Optional[float]
     station_id:    int
     crime_type_id: int
     created_at:    datetime

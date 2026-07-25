@@ -16,7 +16,7 @@ const COLUMNS = [
   { key: 'status',       label: 'Status',   render: (r) => <Badge label={r.status.replace(/_/g, ' ')} variant={r.status} /> },
 ]
 
-const EMPTY = { title: '', description: '', fir_number: '', station_id: '', district_id: '', crime_type_id: '', incident_date: '', location_name: '' }
+const EMPTY = { title: '', description: '', fir_number: '', station_id: '', district_id: '', crime_type_id: '', incident_date: '', location_name: '', latitude: '', longitude: '' }
 const PAGE_SIZE = 20
 
 export default function InvestigatorFIR() {
@@ -75,6 +75,8 @@ export default function InvestigatorFIR() {
         incident_date: new Date(form.incident_date).toISOString(),
         reported_date: now,
         location_name: form.location_name || null,
+        latitude:      form.latitude  ? parseFloat(form.latitude)  : null,
+        longitude:     form.longitude ? parseFloat(form.longitude) : null,
         status:        'filed',
       }
       const { data } = await api.post('/fir', payload)
@@ -156,6 +158,16 @@ export default function InvestigatorFIR() {
           <div>
             <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Location</label>
             <input className="input" placeholder="Incident location" value={form.location_name} onChange={(e) => set('location_name', e.target.value)} />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Latitude</label>
+              <input className="input" type="number" step="any" placeholder="e.g. 12.9716" value={form.latitude} onChange={(e) => set('latitude', e.target.value)} />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Longitude</label>
+              <input className="input" type="number" step="any" placeholder="e.g. 77.5946" value={form.longitude} onChange={(e) => set('longitude', e.target.value)} />
+            </div>
           </div>
           <div>
             <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Description</label>

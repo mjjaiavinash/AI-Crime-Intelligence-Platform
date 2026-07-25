@@ -9,6 +9,7 @@ from schemas.fir import FIRCreate, FIRUpdate
 from schemas.base import PaginatedResponse
 from core.exceptions import NotFoundException, ConflictException
 from core.logging import get_logger
+from ai.rag.sync import sync_fir, delete_fir as rag_delete_fir
 
 logger = get_logger(__name__)
 
@@ -73,7 +74,9 @@ def create_fir(db: Session, payload: FIRCreate) -> FIR:
     db.commit()
     db.refresh(fir)
     logger.info("FIR created: id=%d number=%r", fir.id, fir.fir_number)
-    return _q(db).filter(FIR.id == fir.id).first()
+    result = _q(db).filter(FIR.id == fir.id).first()
+    sync_fir(result)
+    return result
 
 
 def update_fir(db: Session, fir_id: int, payload: FIRUpdate) -> FIR:
@@ -87,11 +90,14 @@ def update_fir(db: Session, fir_id: int, payload: FIRUpdate) -> FIR:
         setattr(fir, field, value)
     db.commit()
     db.refresh(fir)
-    return _q(db).filter(FIR.id == fir.id).first()
+    result = _q(db).filter(FIR.id == fir.id).first()
+    sync_fir(result)
+    return result
 
 
 def delete_fir(db: Session, fir_id: int) -> None:
     fir = get_fir(db, fir_id)
     db.delete(fir)
     db.commit()
+    rag_delete_fir(fir_id)
     logger.info("FIR deleted: id=%d", fir_id)

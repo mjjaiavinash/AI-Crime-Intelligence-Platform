@@ -22,47 +22,15 @@ export default function AdminDashboard() {
   const [users,   setUsers]   = useState([])
   const [summary, setSummary] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [health,  setHealth]  = useState(null)
-
   useEffect(() => {
     Promise.all([
       api.get('/auth/users'),
       api.get('/analytics/summary'),
-      fetch('/health').then(r => r.json()).catch(() => null),
-    ]).then(([u, s, h]) => {
+    ]).then(([u, s]) => {
       setUsers(u.data)
       setSummary(s.data)
-      setHealth(h)
     }).finally(() => setLoading(false))
   }, [])
-
-  const services = [
-    {
-      service: 'FastAPI Backend',
-      ok: !!health,
-      status: health ? 'Operational' : 'Unreachable',
-    },
-    {
-      service: 'MySQL Database',
-      ok: health?.db === true,
-      status: health?.db === true ? 'Operational' : health ? 'Disconnected' : '—',
-    },
-    {
-      service: 'Groq API',
-      ok: true,
-      status: 'Connected',
-    },
-    {
-      service: 'ChromaDB (RAG)',
-      ok: true,
-      status: 'Operational',
-    },
-    {
-      service: 'ML Models',
-      ok: true,
-      status: 'Loaded',
-    },
-  ]
 
   const active = users.filter((u) => u.is_active).length
 
@@ -77,19 +45,7 @@ export default function AdminDashboard() {
         <StatCard title="Open Cases"   value={loading ? '…' : (summary?.open_cases ?? '…')} />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {services.map(({ service, ok, status }) => (
-          <div key={service} className="flex items-center justify-between bg-surface-300 rounded-lg px-4 py-3">
-            <span className="text-sm text-slate-300">{service}</span>
-            <div className="flex items-center gap-2">
-              <span className={`w-1.5 h-1.5 rounded-full ${ok ? 'bg-success animate-pulse-slow' : 'bg-accent'}`} />
-              <span className={`text-xs font-medium ${ok ? 'text-success' : 'text-accent-400'}`}>{status}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="card">
+<div className="card">
         <div className="px-5 py-4 border-b border-slate-700/50 flex items-center justify-between">
           <div>
             <p className="text-sm font-semibold text-white">System Users</p>

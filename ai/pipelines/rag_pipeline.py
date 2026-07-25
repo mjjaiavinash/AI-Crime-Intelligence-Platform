@@ -25,12 +25,16 @@ def run_rag_pipeline(
         context_blocks = []
         for item in retrieved_items:
             doc = item["document"]
-            # Skip corrupted chunks (non-printable / garbled characters)
+            source = item["metadata"].get("source", "")
+            # Skip corrupted, junk, or self-referential chunks
             printable_ratio = sum(c.isprintable() for c in doc) / max(len(doc), 1)
             if printable_ratio < 0.85:
                 continue
-            source_info = item["metadata"].get("source", "Unknown Source")
-            context_blocks.append(f"[Source: {source_info}]\n{doc}")
+            if source.startswith("CrimeIQ_") or source.endswith(".pdf"):
+                continue
+            if len(doc.strip()) < 30:
+                continue
+            context_blocks.append(doc)
         joined_context = "\n\n".join(context_blocks) if context_blocks else "No relevant documents found in database."
 
     # 2. Format system prompt

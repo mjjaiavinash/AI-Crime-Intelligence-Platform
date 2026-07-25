@@ -21,8 +21,6 @@ import AdminRoles      from '@/pages/admin/AdminRoles'
 import AdminDistricts  from '@/pages/admin/AdminDistricts'
 import AdminStations   from '@/pages/admin/AdminStations'
 import AdminCrimeTypes from '@/pages/admin/AdminCrimeTypes'
-import AdminSettings   from '@/pages/admin/AdminSettings'
-import AdminAuditLogs  from '@/pages/admin/AdminAuditLogs'
 import AdminReports    from '@/pages/admin/AdminReports'
 
 // Investigator pages
@@ -110,8 +108,6 @@ export default function App() {
             <Route path="/admin/districts"   element={<AdminDistricts />} />
             <Route path="/admin/stations"    element={<AdminStations />} />
             <Route path="/admin/crime-types" element={<AdminCrimeTypes />} />
-            <Route path="/admin/settings"    element={<AdminSettings />} />
-            <Route path="/admin/audit-logs"  element={<AdminAuditLogs />} />
             <Route path="/admin/reports"     element={<AdminReports />} />
           </Route>
         </Route>

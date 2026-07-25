@@ -18,8 +18,6 @@ const NAV = [
     group: 'System',
     items: [
       { to: '/chat',             label: 'AI Chat',         icon: <IcoChat />,     badge: 'AI' },
-      { to: '/admin/settings',   label: 'System Settings', icon: <IcoSettings /> },
-      { to: '/admin/audit-logs', label: 'Audit Logs',      icon: <IcoLog /> },
       { to: '/admin/reports',    label: 'Reports',         icon: <IcoChart /> },
     ],
   },

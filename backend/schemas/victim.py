@@ -61,10 +61,12 @@ class VictimRead(APIBase):
 
 
 class VictimSummary(APIBase):
-    id:          int
-    fir_id:      int
-    full_name:   str
-    gender:      str
-    injury_type: InjuryType
-    is_minor:    bool
-    created_at:  datetime
+    id:              int
+    fir_id:          int
+    full_name:       str
+    gender:          str
+    age_at_incident: Optional[int]
+    injury_type:     InjuryType
+    is_minor:        bool
+    is_anonymous:    bool
+    created_at:      datetime

@@ -300,12 +300,6 @@ export default function ChatPage() {
             onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage() } }}
           />
           <input ref={fileRef} type="file" accept=".pdf,.txt,.csv" className="hidden" onChange={handleFileUpload} />
-          <button type="button" onClick={() => fileRef.current?.click()} title="Upload document to AI"
-            className="p-2 rounded-xl transition-colors shrink-0 text-slate-500 hover:text-white hover:bg-surface-400">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
-            </svg>
-          </button>
           <button type="button"
             onMouseDown={() => startSTT(lang === 'kn' ? 'kn-IN' : 'en-IN')}
             onMouseUp={stopSTT}

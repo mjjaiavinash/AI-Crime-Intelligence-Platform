@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import ReactMarkdown from 'react-markdown'
 import api from '@/services/api'
 import PageHeader from '@/components/common/PageHeader'
 import Spinner from '@/components/common/Spinner'
@@ -75,8 +76,7 @@ export default function InvestigatorSuspectProfile() {
     <div className="space-y-6 max-w-7xl mx-auto">
       <PageHeader
         title="Suspect Profiling"
-        subtitle="AI behavioral analysis + ML recidivism risk scoring"
-        action={<span className="badge bg-accent/15 text-accent-300 border border-accent/30 text-xs">Groq + ML</span>}
+        subtitle="AI behavioral analysis and ML recidivism risk scoring"
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -95,7 +95,7 @@ export default function InvestigatorSuspectProfile() {
                 ))}
               </select>
               <button type="submit" disabled={loading} className="btn-accent w-full">
-                {loading ? <><Spinner size="sm" /> Profiling…</> : '⚡ Generate Profile'}
+                {loading ? <><Spinner size="sm" /> Profiling…</> : 'Generate Profile'}
               </button>
             </form>
           </div>
@@ -176,9 +176,15 @@ export default function InvestigatorSuspectProfile() {
                 </div>
                 <span className="text-xs px-2 py-0.5 rounded bg-accent/10 text-accent-300 border border-accent/20 font-mono">AI</span>
               </div>
-              <pre className="whitespace-pre-wrap font-sans text-sm text-slate-300 leading-relaxed">
-                {profile.profiling_analysis}
-              </pre>
+              <div className="prose prose-invert prose-sm max-w-none
+                prose-headings:text-white prose-headings:font-semibold
+                prose-h3:text-base prose-h3:mt-5 prose-h3:mb-2
+                prose-p:text-slate-300 prose-p:leading-relaxed
+                prose-li:text-slate-300 prose-li:leading-relaxed
+                prose-strong:text-white prose-strong:font-semibold
+                prose-hr:border-slate-700">
+                <ReactMarkdown>{profile.profiling_analysis}</ReactMarkdown>
+              </div>
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center h-64 text-center">

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import ReactMarkdown from 'react-markdown'
 import useAuthStore from '@/store/authStore'
 import PageHeader from '@/components/common/PageHeader'
 import Spinner from '@/components/common/Spinner'
@@ -94,8 +95,8 @@ export default function SupervisorInsights() {
     <div className="space-y-6 max-w-7xl mx-auto">
       <PageHeader
         title="AI Insights"
-        subtitle="Groq-powered strategic intelligence for supervisors"
-        action={<span className="badge bg-accent/15 text-accent-300 border border-accent/30 text-xs">Powered by Groq</span>}
+        subtitle="AI-powered strategic intelligence for supervisors"
+        action={<span className="badge bg-accent/15 text-accent-300 border border-accent/30 text-xs">AI Insights</span>}
       />
 
       <div className="card p-5">
@@ -108,14 +109,16 @@ export default function SupervisorInsights() {
             onChange={(e) => setQuery(e.target.value)}
           />
           <button type="submit" disabled={loading} className="btn-accent whitespace-nowrap">
-            {loading ? <><Spinner size="sm" /> Generating…</> : '⚡ Generate'}
+            {loading ? <><Spinner size="sm" /> Generating…</> : 'Generate'}
           </button>
         </form>
 
         {loading && stream && (
           <div className="mt-4 p-4 rounded-lg bg-surface-300 border border-slate-700/50">
             <p className="text-xs text-slate-500 mb-2 font-semibold">Streaming response…</p>
-            <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">{stream}</p>
+            <div className="prose prose-invert prose-sm max-w-none prose-p:text-slate-300 prose-strong:text-white prose-li:text-slate-300">
+              <ReactMarkdown>{stream}</ReactMarkdown>
+            </div>
           </div>
         )}
       </div>
@@ -137,7 +140,9 @@ export default function SupervisorInsights() {
               </div>
               <span className="text-xs px-2 py-0.5 rounded bg-accent/10 text-accent-300 border border-accent/20 font-mono">AI</span>
             </div>
-            <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">{insight.content}</p>
+            <div className="prose prose-invert prose-sm max-w-none prose-p:text-slate-300 prose-strong:text-white prose-li:text-slate-300 leading-relaxed">
+              <ReactMarkdown>{insight.content}</ReactMarkdown>
+            </div>
           </div>
         ))}
       </div>

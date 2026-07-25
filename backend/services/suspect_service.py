@@ -7,6 +7,7 @@ from schemas.suspect import SuspectCreate, SuspectUpdate
 from schemas.base import PaginatedResponse
 from core.exceptions import NotFoundException
 from core.logging import get_logger
+from ai.rag.sync import sync_suspect, delete_suspect as rag_delete_suspect
 
 logger = get_logger(__name__)
 
@@ -57,6 +58,7 @@ def create_suspect(db: Session, payload: SuspectCreate) -> Suspect:
     db.commit()
     db.refresh(s)
     logger.info("Suspect created: id=%d fir_id=%d", s.id, fir_id)
+    sync_suspect(s)
     return s
 
 
@@ -66,6 +68,7 @@ def update_suspect(db: Session, suspect_id: int, payload: SuspectUpdate) -> Susp
         setattr(s, field, value)
     db.commit()
     db.refresh(s)
+    sync_suspect(s)
     return s
 
 
@@ -73,4 +76,5 @@ def delete_suspect(db: Session, suspect_id: int) -> None:
     s = get_suspect(db, suspect_id)
     db.delete(s)
     db.commit()
+    rag_delete_suspect(suspect_id)
     logger.info("Suspect deleted: id=%d", suspect_id)

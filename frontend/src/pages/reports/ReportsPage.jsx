@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import ReactMarkdown from 'react-markdown'
 import api from '@/services/api'
 import PageHeader from '@/components/common/PageHeader'
 import Spinner from '@/components/common/Spinner'
@@ -28,7 +29,7 @@ export default function ReportsPage() {
       setHistory((h) => [newReport, ...h])
       toast.success('Report generated successfully.')
     } catch (err) {
-      toast.error(err.response?.data?.detail ?? 'Report generation failed. Check Groq API.')
+      toast.error(err.response?.data?.detail ?? 'Report generation failed. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -113,10 +114,15 @@ export default function ReportsPage() {
                   Export PDF
                 </button>
               </div>
-              <div className="prose prose-invert prose-sm max-w-none">
-                <pre className="whitespace-pre-wrap font-sans text-sm text-slate-300 leading-relaxed">
-                  {report.content}
-                </pre>
+              <div className="prose prose-invert prose-sm max-w-none
+                prose-headings:text-white prose-headings:font-semibold
+                prose-h3:text-base prose-h3:mt-5 prose-h3:mb-2
+                prose-h4:text-sm prose-h4:mt-4 prose-h4:mb-1
+                prose-p:text-slate-300 prose-p:leading-relaxed
+                prose-li:text-slate-300 prose-li:leading-relaxed
+                prose-strong:text-white prose-strong:font-semibold
+                prose-hr:border-slate-700">
+                <ReactMarkdown>{report.content}</ReactMarkdown>
               </div>
             </div>
           ) : (

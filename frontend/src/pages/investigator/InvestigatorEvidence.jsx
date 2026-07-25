@@ -121,7 +121,7 @@ export default function InvestigatorEvidence() {
             <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Link to FIR *</label>
             <select className="input" value={form.fir_id} onChange={f('fir_id')} required>
               <option value="">Select FIR…</option>
-              {firs.map((fir) => <option key={fir.id} value={fir.id}>{fir.fir_number} — {fir.title}</option>)}
+              {firs.map((fir) => <option key={fir.id} value={fir.id}>{fir.fir_number} — {cleanText(fir.title)}</option>)}
             </select>
           </div>
 

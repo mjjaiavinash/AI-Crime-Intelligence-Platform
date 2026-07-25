@@ -66,6 +66,25 @@ def delete_victim(victim_id: int):
     _delete(f"victim_{victim_id}")
 
 
+def sync_suspect(suspect):
+    doc_id = f"suspect_{suspect.id}"
+    text = (
+        f"Suspect ID: {suspect.id}. Name: {getattr(suspect, 'full_name', 'Unknown')}. "
+        f"Alias: {getattr(suspect, 'alias', 'N/A') or 'N/A'}. "
+        f"Gender: {getattr(suspect, 'gender', 'N/A')}. "
+        f"Threat Level: {suspect.threat_level.value if hasattr(suspect.threat_level, 'value') else str(getattr(suspect, 'threat_level', 'N/A'))}. "
+        f"Arrest Status: {suspect.arrest_status.value if hasattr(suspect.arrest_status, 'value') else str(getattr(suspect, 'arrest_status', 'N/A'))}. "
+        f"Gang Affiliation: {getattr(suspect, 'gang_affiliation', 'None') or 'None'}. "
+        f"Nationality: {getattr(suspect, 'nationality', 'N/A')}. "
+        f"Address: {getattr(suspect, 'address', 'N/A') or 'N/A'}."
+    )
+    _upsert(doc_id, text, {"source": "suspect", "suspect_id": suspect.id})
+
+
+def delete_suspect(suspect_id: int):
+    _delete(f"suspect_{suspect_id}")
+
+
 def sync_fir(fir):
     doc_id = f"fir_{fir.id}"
     text = (

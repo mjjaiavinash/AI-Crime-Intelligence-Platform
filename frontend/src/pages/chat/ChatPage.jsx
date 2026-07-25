@@ -76,11 +76,13 @@ export default function ChatPage() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, loading])
 
+  const detectLang = (text) => /[\u0C80-\u0CFF]/.test(text) ? 'kn' : 'en'
+
   const speakText = async (text) => {
     try {
       const fd = new FormData()
       fd.append('text', text.slice(0, 500))
-      fd.append('lang', lang === 'kn' ? 'kn' : 'en')
+      fd.append('lang', detectLang(text))
       const res = await fetch('/api/v1/voice/tts', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },

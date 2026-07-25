@@ -9,7 +9,7 @@ import toast from 'react-hot-toast'
 
 const INJURY_COLOR = {
   none: 'text-slate-400', minor: 'text-yellow-400',
-  moderate: 'text-orange-400', severe: 'text-red-400', fatal: 'text-red-600',
+  grievous: 'text-red-400', fatal: 'text-red-600',
 }
 
 const COLUMNS = [
@@ -119,7 +119,7 @@ export default function InvestigatorVictims() {
             <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Link to FIR *</label>
             <select className="input" value={form.fir_id} onChange={f('fir_id')} required>
               <option value="">Select FIR…</option>
-              {firs.map((fir) => <option key={fir.id} value={fir.id}>{fir.fir_number} — {fir.title}</option>)}
+              {firs.map((fir) => <option key={fir.id} value={fir.id}>{fir.fir_number} — {cleanText(fir.title)}</option>)}
             </select>
           </div>
 
@@ -160,8 +160,7 @@ export default function InvestigatorVictims() {
               <select className="input" value={form.injury_type} onChange={f('injury_type')}>
                 <option value="none">None</option>
                 <option value="minor">Minor</option>
-                <option value="moderate">Moderate</option>
-                <option value="severe">Severe</option>
+                <option value="grievous">Grievous</option>
                 <option value="fatal">Fatal</option>
               </select>
             </div>

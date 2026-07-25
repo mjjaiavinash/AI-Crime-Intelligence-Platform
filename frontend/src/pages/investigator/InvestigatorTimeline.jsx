@@ -3,6 +3,7 @@ import toast from 'react-hot-toast'
 import api from '@/services/api'
 import PageHeader from '@/components/common/PageHeader'
 import Spinner from '@/components/common/Spinner'
+import { cleanText } from '@/utils/helpers'
 
 const TYPE_STYLE = {
   crime:    { dot: 'bg-accent',      label: 'text-accent-300' },
@@ -61,7 +62,7 @@ export default function InvestigatorTimeline() {
           <select className="input flex-1" value={firId} onChange={(e) => setFirId(e.target.value)} required>
             <option value="">Select a FIR to view timeline…</option>
             {firs.map((f) => (
-              <option key={f.id} value={f.id}>{f.fir_number} — {f.title}</option>
+              <option key={f.id} value={f.id}>{f.fir_number} — {cleanText(f.title)}</option>
             ))}
           </select>
           <button type="submit" disabled={loading} className="btn-primary whitespace-nowrap">

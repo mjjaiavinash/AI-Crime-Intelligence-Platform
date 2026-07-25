@@ -26,7 +26,7 @@ router = APIRouter()
 def generate_report(
     payload:      ReportRequest,
     db:           Session = Depends(get_db),
-    current_user: dict    = Depends(require_role("admin", "supervisor", "crime_analyst")),
+    current_user: dict    = Depends(require_role("admin", "supervisor", "crime_analyst", "investigator")),
 ):
     """
     Generates a natural-language intelligence report using Groq LLM + RAG.

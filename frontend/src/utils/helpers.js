@@ -4,16 +4,38 @@
 export const cleanText = (str) => {
   if (!str) return str
   return str
+    // Em dash variants
     .replace(/ÔÇö/g, '\u2014')
-    .replace(/ÔÇô/g, '\u2013')
+    .replace(/ÔÇÖ/g, '\u2014')
     .replace(/â€"/g, '\u2014')
-    .replace(/â€“/g, '\u2013')
+    .replace(/â€\u201d/g, '\u2014')
+    // En dash variants
+    .replace(/ÔÇô/g, '\u2013')
+    .replace(/â€"/g, '\u2013')
+    // Smart double quotes
     .replace(/â€œ/g, '\u201c')
     .replace(/â€/g, '\u201d')
+    // Smart single quotes / apostrophe
     .replace(/â€™/g, '\u2019')
     .replace(/â€˜/g, '\u2018')
+    .replace(/ÔÇÿ/g, '\u2019')
+    .replace(/ÔÇÜ/g, '\u2018')
+    // Ellipsis
     .replace(/â€¦/g, '\u2026')
+    // Middle dot
     .replace(/Â·/g, '\u00b7')
+    // Common accented chars misread as latin1
+    .replace(/Ã©/g, '\u00e9')
+    .replace(/Ã /g, '\u00e0')
+    .replace(/Ã¨/g, '\u00e8')
+    .replace(/Ã¢/g, '\u00e2')
+    .replace(/Ã®/g, '\u00ee')
+    .replace(/Ã´/g, '\u00f4')
+    .replace(/Ã»/g, '\u00fb')
+    .replace(/Ã§/g, '\u00e7')
+    // Strip remaining stray Ã and Â prefixes
+    .replace(/Ã./g, '')
+    .replace(/Â/g, '')
 }
 
 export const formatDate = (iso) =>

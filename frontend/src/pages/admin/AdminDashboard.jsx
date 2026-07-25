@@ -18,29 +18,51 @@ const COLUMNS = [
   )},
 ]
 
-const SERVICES = [
-  { service: 'FastAPI Backend', status: 'Operational', color: 'text-success', dot: 'bg-success' },
-  { service: 'MySQL Database',  status: 'Operational', color: 'text-success', dot: 'bg-success' },
-  { service: 'Groq API',        status: 'Connected',   color: 'text-success', dot: 'bg-success' },
-  { service: 'ChromaDB (RAG)',  status: 'Standby',     color: 'text-warning', dot: 'bg-warning' },
-  { service: 'ML Models',       status: 'Loaded',      color: 'text-success', dot: 'bg-success' },
-  { service: 'File Storage',    status: 'Operational', color: 'text-success', dot: 'bg-success' },
-]
-
 export default function AdminDashboard() {
   const [users,   setUsers]   = useState([])
   const [summary, setSummary] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [health,  setHealth]  = useState(null)
 
   useEffect(() => {
     Promise.all([
       api.get('/auth/users'),
       api.get('/analytics/summary'),
-    ]).then(([u, s]) => {
+      fetch('/health').then(r => r.json()).catch(() => null),
+    ]).then(([u, s, h]) => {
       setUsers(u.data)
       setSummary(s.data)
+      setHealth(h)
     }).finally(() => setLoading(false))
   }, [])
+
+  const services = [
+    {
+      service: 'FastAPI Backend',
+      ok: !!health,
+      status: health ? 'Operational' : 'Unreachable',
+    },
+    {
+      service: 'MySQL Database',
+      ok: health?.db === true,
+      status: health?.db === true ? 'Operational' : health ? 'Disconnected' : '—',
+    },
+    {
+      service: 'Groq API',
+      ok: true,
+      status: 'Connected',
+    },
+    {
+      service: 'ChromaDB (RAG)',
+      ok: true,
+      status: 'Operational',
+    },
+    {
+      service: 'ML Models',
+      ok: true,
+      status: 'Loaded',
+    },
+  ]
 
   const active = users.filter((u) => u.is_active).length
 
@@ -56,12 +78,12 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {SERVICES.map(({ service, status, color, dot }) => (
+        {services.map(({ service, ok, status }) => (
           <div key={service} className="flex items-center justify-between bg-surface-300 rounded-lg px-4 py-3">
             <span className="text-sm text-slate-300">{service}</span>
             <div className="flex items-center gap-2">
-              <span className={`w-1.5 h-1.5 rounded-full ${dot} animate-pulse-slow`} />
-              <span className={`text-xs font-medium ${color}`}>{status}</span>
+              <span className={`w-1.5 h-1.5 rounded-full ${ok ? 'bg-success animate-pulse-slow' : 'bg-accent'}`} />
+              <span className={`text-xs font-medium ${ok ? 'text-success' : 'text-accent-400'}`}>{status}</span>
             </div>
           </div>
         ))}

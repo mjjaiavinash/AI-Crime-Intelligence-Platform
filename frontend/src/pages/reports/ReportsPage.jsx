@@ -6,8 +6,44 @@ import PageHeader from '@/components/common/PageHeader'
 import Spinner from '@/components/common/Spinner'
 import EmptyState from '@/components/common/EmptyState'
 import { exportReportToPDF } from '@/utils/exportPDF'
+import useAuthStore from '@/store/authStore'
+
+const ROLE_CONFIG = {
+  admin: {
+    title: 'Admin Intelligence Reports',
+    subtitle: 'Generate platform-wide intelligence reports — users, districts, crime types, and system analytics',
+    placeholder: 'e.g. Summarize crime activity across all districts for the last quarter, highlight top crime types and high-risk stations...',
+    badge: 'Admin Access',
+    badgeColor: 'bg-red-500/15 text-red-300 border-red-500/30',
+  },
+  investigator: {
+    title: 'AI Intelligence Reports',
+    subtitle: 'Generate natural-language reports using Groq LLM + RAG',
+    placeholder: 'e.g. Analyze robbery patterns in the downtown sector and identify suspect connections...',
+    badge: 'Powered by Groq',
+    badgeColor: 'bg-accent/15 text-accent-300 border-accent/30',
+  },
+  crime_analyst: {
+    title: 'Crime Analytics Reports',
+    subtitle: 'Generate trend analysis, hotspot forecasts, and pattern intelligence reports',
+    placeholder: 'e.g. Analyze crime trends in Bengaluru Urban over the past 6 months and forecast hotspot areas for next month...',
+    badge: 'Analyst Access',
+    badgeColor: 'bg-blue-500/15 text-blue-300 border-blue-500/30',
+  },
+  supervisor: {
+    title: 'Supervisor Intelligence Reports',
+    subtitle: 'Generate operational reports on officer performance, resource allocation, and district-level crime status',
+    placeholder: 'e.g. Provide a summary of high-risk cases under investigation across all stations and officer workload distribution...',
+    badge: 'Supervisor Access',
+    badgeColor: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
+  },
+}
 
 export default function ReportsPage() {
+  const user = useAuthStore((s) => s.user)
+  const role = user?.role ?? 'investigator'
+  const cfg  = ROLE_CONFIG[role] ?? ROLE_CONFIG.investigator
+
   const [query,   setQuery]   = useState('')
   const [title,   setTitle]   = useState('')
   const [loading, setLoading] = useState(false)
@@ -38,9 +74,13 @@ export default function ReportsPage() {
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
       <PageHeader
-        title="AI Intelligence Reports"
-        subtitle="Generate natural-language reports using Groq LLM + RAG"
-        action={<span className="badge bg-accent/15 text-accent-300 border border-accent/30 text-xs">Powered by Groq</span>}
+        title={cfg.title}
+        subtitle={cfg.subtitle}
+        action={
+          <span className={`badge text-xs border ${cfg.badgeColor}`}>
+            {cfg.badge}
+          </span>
+        }
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -56,11 +96,11 @@ export default function ReportsPage() {
               <div>
                 <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Intelligence Query</label>
                 <textarea className="input resize-none" rows={5}
-                  placeholder="e.g. Analyze robbery patterns in the downtown sector and identify suspect connections..."
+                  placeholder={cfg.placeholder}
                   value={query} onChange={(e) => setQuery(e.target.value)} />
               </div>
               <button type="submit" disabled={loading} className="btn-accent w-full">
-                {loading ? <><Spinner size="sm" /> Generating…</> : '⚡ Generate Report'}
+                {loading ? <><Spinner size="sm" /> Generating…</> : 'Generate Report'}
               </button>
             </form>
           </div>

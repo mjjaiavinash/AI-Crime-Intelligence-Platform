@@ -17,7 +17,7 @@ router = APIRouter(dependencies=[Depends(get_current_user)])
 )
 def list_victims(
     page:      int           = Query(1,  ge=1),
-    page_size: int           = Query(20, ge=1, le=100),
+    page_size: int           = Query(20, ge=1, le=1000),
     fir_id:    Optional[int] = Query(None, description="Filter by FIR ID"),
     db: Session = Depends(get_db),
 ):

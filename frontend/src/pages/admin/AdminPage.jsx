@@ -62,7 +62,7 @@ export default function AdminPage() {
       />
 
       {/* System stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: 'Total Users',    value: '4',   color: 'text-primary-300' },
           { label: 'Active Users',   value: '3',   color: 'text-success' },
@@ -112,7 +112,7 @@ export default function AdminPage() {
       {/* Add user modal */}
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Add New User">
         <form onSubmit={handleCreate} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Username</label>
               <input className="input" placeholder="username" value={form.username}

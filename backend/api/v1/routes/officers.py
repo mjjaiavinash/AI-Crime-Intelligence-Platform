@@ -14,7 +14,7 @@ router = APIRouter(dependencies=[Depends(get_current_user)])
             summary="List all officers")
 def list_officers(
     page:       int            = Query(1,  ge=1),
-    page_size:  int            = Query(20, ge=1, le=100),
+    page_size:  int            = Query(20, ge=1, le=500),
     station_id: Optional[int]  = Query(None, description="Filter by station"),
     is_active:  Optional[bool] = Query(None, description="Filter by active status"),
     db: Session = Depends(get_db),

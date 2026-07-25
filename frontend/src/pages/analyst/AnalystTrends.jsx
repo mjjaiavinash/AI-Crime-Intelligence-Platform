@@ -35,7 +35,7 @@ export default function AnalystTrends() {
         action={<span className="badge bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-xs">Trend Analysis</span>}
       />
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard title="Total Crimes"    value={loading ? '…' : (summary?.total_crimes ?? 0)} accent />
         <StatCard title="Months of Data"  value={loading ? '…' : trends.length} />
         <StatCard title="Monthly Average" value={loading ? '…' : avg} />

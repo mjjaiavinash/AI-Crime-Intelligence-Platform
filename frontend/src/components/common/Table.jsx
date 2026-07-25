@@ -1,12 +1,14 @@
 export default function Table({ columns, data, loading, emptyMessage = 'No records found.' }) {
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm">
+    <div className="overflow-x-auto -mx-0 w-full">
+      <table className="min-w-full text-sm">
         <thead>
           <tr className="border-b border-slate-700/60">
             {columns.map((col) => (
               <th key={col.key}
-                className="px-4 py-3 text-left text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500 whitespace-nowrap">
+                className={`px-4 py-3 text-left text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500 whitespace-nowrap ${
+                  col.key === 'actions' ? 'w-px' : ''
+                }`}>
                 {col.label}
               </th>
             ))}
@@ -39,7 +41,9 @@ export default function Table({ columns, data, loading, emptyMessage = 'No recor
               <tr key={row.id ?? i}
                 className="border-b border-slate-700/30 hover:bg-white/[0.025] transition-colors duration-100 group">
                 {columns.map((col) => (
-                  <td key={col.key} className="px-4 py-3 text-slate-300 whitespace-nowrap">
+                  <td key={col.key} className={`px-4 py-3 text-slate-300 whitespace-nowrap ${
+                    col.key === 'actions' ? 'w-px' : ''
+                  }`}>
                     {col.render ? col.render(row) : row[col.key] ?? '—'}
                   </td>
                 ))}

@@ -27,10 +27,14 @@ function ChangeView({ center, zoom }) {
 }
 
 export default function CrimeMap({ crimes = [], hotspots = [], center = [12.9716, 77.5946], zoom = 12 }) {
-  // Default center is Bengaluru
-  const mapCenter = crimes.length > 0 && crimes[0].latitude
-    ? [crimes[0].latitude, crimes[0].longitude]
-    : center;
+  // Auto-center on average of all crime coordinates, fallback to Bengaluru
+  const mapCenter = (() => {
+    const valid = crimes.filter((c) => c.latitude && c.longitude)
+    if (valid.length === 0) return center
+    const avgLat = valid.reduce((s, c) => s + c.latitude, 0) / valid.length
+    const avgLng = valid.reduce((s, c) => s + c.longitude, 0) / valid.length
+    return [avgLat, avgLng]
+  })()
 
   return (
     <div className="w-full h-full rounded-xl overflow-hidden shadow-lg border border-slate-700 bg-slate-800" style={{ minHeight: "450px" }}>

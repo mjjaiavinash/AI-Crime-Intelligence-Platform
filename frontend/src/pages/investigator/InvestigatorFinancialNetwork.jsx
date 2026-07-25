@@ -95,7 +95,7 @@ export default function InvestigatorFinancialNetwork() {
       </div>
 
       {/* KPI strip */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: 'Total Accounts',   value: accounts.length,  color: 'text-white',        sub: 'All linked accounts' },
           { label: 'Active',           value: activeCount,      color: 'text-green-400',     sub: 'No restrictions' },

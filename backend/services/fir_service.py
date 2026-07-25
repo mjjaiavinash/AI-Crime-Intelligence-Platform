@@ -31,7 +31,7 @@ def list_firs(
     station_id: Optional[int] = None,
     crime_type_id: Optional[int] = None,
 ) -> PaginatedResponse:
-    q = db.query(FIR)
+    q = _q(db)
     if status:
         q = q.filter(FIR.status == status)
     if station_id:

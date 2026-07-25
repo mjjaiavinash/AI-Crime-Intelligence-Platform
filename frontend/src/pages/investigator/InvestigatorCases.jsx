@@ -94,10 +94,10 @@ export default function InvestigatorCases() {
       />
 
       <div className="card">
-        <div className="px-5 py-4 border-b border-slate-700/50 flex items-center justify-between gap-4">
+        <div className="px-4 sm:px-5 py-4 border-b border-slate-700/50 flex flex-col sm:flex-row sm:items-center gap-3">
           <p className="text-sm font-semibold text-white shrink-0">FIR List</p>
           <input
-            className="input text-sm py-1.5 max-w-xs"
+            className="input text-sm py-1.5 w-full sm:max-w-xs"
             placeholder="Search FIR no., title, location…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -142,7 +142,7 @@ export default function InvestigatorCases() {
           {/* Status Selector */}
           <div>
             <label className="text-xs font-semibold uppercase tracking-widest text-slate-500 block mb-3">Select New Status</label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {STATUS_OPTIONS.map((s) => {
                 const isActive = newStatus === s.value
                 const colorMap = {

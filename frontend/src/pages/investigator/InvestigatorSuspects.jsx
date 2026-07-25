@@ -12,19 +12,9 @@ const THREAT_COLOR = {
   medium: 'text-yellow-400', low: 'text-green-400',
 }
 const STATUS_COLOR = {
-  at_large: 'text-accent-400', arrested: 'text-success',
+  at_large: 'text-accent-400', arrested: 'text-emerald-400',
   bailed: 'text-yellow-400', absconding: 'text-red-400', deceased: 'text-slate-500',
 }
-
-const COLUMNS = [
-  { key: 'id',            label: '#',      render: (r) => <span className="font-mono text-slate-500">#{r.id}</span> },
-  { key: 'full_name',     label: 'Name',   render: (r) => <span className="font-medium text-white">{cleanText(r.full_name) || 'Unknown'}</span> },
-  { key: 'alias',         label: 'Alias',  render: (r) => <span className="text-slate-400 text-xs">{cleanText(r.alias) || '—'}</span> },
-  { key: 'gender',        label: 'Gender', render: (r) => <span className="capitalize text-slate-300">{r.gender}</span> },
-  { key: 'age_estimated', label: 'Age',    render: (r) => <span className="text-slate-300">{r.age_estimated ?? '—'}</span> },
-  { key: 'threat_level',  label: 'Threat', render: (r) => <span className={`text-xs font-semibold capitalize ${THREAT_COLOR[r.threat_level]}`}>{r.threat_level}</span> },
-  { key: 'arrest_status', label: 'Status', render: (r) => <span className={`text-xs font-semibold capitalize ${STATUS_COLOR[r.arrest_status]}`}>{r.arrest_status?.replace('_', ' ')}</span> },
-]
 
 const EMPTY = {
   full_name: '', alias: '', gender: 'male', age_estimated: '',
@@ -35,15 +25,16 @@ const EMPTY = {
 const PAGE_SIZE = 20
 
 export default function InvestigatorSuspects() {
-  const [suspects, setSuspects] = useState([])
-  const [loading,  setLoading]  = useState(true)
-  const [total,    setTotal]    = useState(0)
-  const [firs,     setFirs]     = useState([])
-  const [open,     setOpen]     = useState(false)
-  const [form,     setForm]     = useState(EMPTY)
-  const [saving,   setSaving]   = useState(false)
-  const [search,   setSearch]   = useState('')
-  const [page,     setPage]     = useState(1)
+  const [suspects,     setSuspects]     = useState([])
+  const [loading,      setLoading]      = useState(true)
+  const [total,        setTotal]        = useState(0)
+  const [firs,         setFirs]         = useState([])
+  const [open,         setOpen]         = useState(false)
+  const [editSuspect,  setEditSuspect]  = useState(null)
+  const [form,         setForm]         = useState(EMPTY)
+  const [saving,       setSaving]       = useState(false)
+  const [search,       setSearch]       = useState('')
+  const [page,         setPage]         = useState(1)
 
   const load = (p = page) => {
     setLoading(true)
@@ -53,7 +44,87 @@ export default function InvestigatorSuspects() {
   }
 
   useEffect(() => { load(page) }, [page])
-  useEffect(() => { api.get('/fir?page_size=100').then((r) => setFirs(r.data.items ?? [])) }, [])
+  useEffect(() => { api.get('/fir?page_size=500').then((r) => setFirs(r.data.items ?? [])).catch(() => {}) }, [])
+
+  const openCreate = () => { setEditSuspect(null); setForm(EMPTY); setOpen(true) }
+
+  const openEdit = (s) => {
+    setEditSuspect(s)
+    setForm({
+      full_name:        s.full_name ?? '',
+      alias:            s.alias ?? '',
+      gender:           s.gender ?? 'male',
+      age_estimated:    s.age_estimated ?? '',
+      threat_level:     s.threat_level ?? 'low',
+      arrest_status:    s.arrest_status ?? 'at_large',
+      gang_affiliation: s.gang_affiliation ?? '',
+      is_known_criminal:s.is_known_criminal ?? false,
+      fir_id:           '',
+      role_in_case:     s.role_in_case ?? '',
+    })
+    setOpen(true)
+  }
+
+  const f = (k) => (e) => setForm((p) => ({ ...p, [k]: e.target.type === 'checkbox' ? e.target.checked : e.target.value }))
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!editSuspect && !form.fir_id) { toast.error('Please select a FIR'); return }
+    if (!form.full_name) { toast.error('Enter suspect name'); return }
+    setSaving(true)
+    try {
+      if (editSuspect) {
+        const { data } = await api.patch(`/suspects/${editSuspect.id}`, {
+          full_name:         form.full_name,
+          alias:             form.alias || null,
+          gender:            form.gender,
+          age_estimated:     form.age_estimated ? parseInt(form.age_estimated) : null,
+          threat_level:      form.threat_level,
+          arrest_status:     form.arrest_status,
+          gang_affiliation:  form.gang_affiliation || null,
+          is_known_criminal: form.is_known_criminal,
+          role_in_case:      form.role_in_case || null,
+        })
+        setSuspects((p) => p.map((s) => s.id === editSuspect.id ? data : s))
+        toast.success('Suspect updated successfully')
+      } else {
+        await api.post('/suspects', {
+          fir_id:            parseInt(form.fir_id),
+          full_name:         form.full_name,
+          alias:             form.alias || null,
+          gender:            form.gender,
+          age_estimated:     form.age_estimated ? parseInt(form.age_estimated) : null,
+          threat_level:      form.threat_level,
+          arrest_status:     form.arrest_status,
+          gang_affiliation:  form.gang_affiliation || null,
+          is_known_criminal: form.is_known_criminal,
+          role_in_case:      form.role_in_case || null,
+        })
+        toast.success('Suspect added successfully')
+        load(page)
+      }
+      setOpen(false)
+    } catch (err) {
+      toast.error(err.response?.data?.detail ?? (editSuspect ? 'Failed to update suspect' : 'Failed to add suspect'))
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const COLUMNS = [
+    { key: 'full_name',     label: 'Name',   render: (r) => <span className="font-medium text-white">{cleanText(r.full_name) || 'Unknown'}</span> },
+    { key: 'alias',         label: 'Alias',  render: (r) => <span className="text-slate-400 text-xs">{cleanText(r.alias) || '—'}</span> },
+    { key: 'gender',        label: 'Gender', render: (r) => <span className="capitalize text-slate-300 text-xs">{r.gender}</span> },
+    { key: 'age_estimated', label: 'Age',    render: (r) => <span className="text-slate-300 text-xs">{r.age_estimated ?? '—'}</span> },
+    { key: 'threat_level',  label: 'Threat', render: (r) => <span className={`text-xs font-semibold capitalize ${THREAT_COLOR[r.threat_level]}`}>{r.threat_level}</span> },
+    { key: 'arrest_status', label: 'Status', render: (r) => <span className={`text-xs font-semibold capitalize ${STATUS_COLOR[r.arrest_status]}`}>{r.arrest_status?.replace('_', ' ')}</span> },
+    { key: 'actions',       label: '',       render: (r) => (
+      <button onClick={() => openEdit(r)}
+        className="text-xs font-semibold px-3 py-1.5 rounded-lg border text-blue-400 border-blue-500/20 bg-blue-500/10 hover:bg-blue-500/20 transition-all whitespace-nowrap">
+        Edit
+      </button>
+    )},
+  ]
 
   const filtered = search.trim()
     ? suspects.filter((r) =>
@@ -63,37 +134,6 @@ export default function InvestigatorSuspects() {
       )
     : suspects
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (!form.fir_id) { toast.error('Please select a FIR'); return }
-    if (!form.full_name) { toast.error('Enter suspect name'); return }
-    setSaving(true)
-    try {
-      await api.post('/suspects', {
-        fir_id: parseInt(form.fir_id),
-        full_name: form.full_name,
-        alias: form.alias || null,
-        gender: form.gender,
-        age_estimated: form.age_estimated ? parseInt(form.age_estimated) : null,
-        threat_level: form.threat_level,
-        arrest_status: form.arrest_status,
-        gang_affiliation: form.gang_affiliation || null,
-        is_known_criminal: form.is_known_criminal,
-        role_in_case: form.role_in_case || null,
-      })
-      toast.success('Suspect added successfully')
-      setOpen(false)
-      setForm(EMPTY)
-      load(page)
-    } catch (err) {
-      toast.error(err.response?.data?.detail ?? 'Failed to add suspect')
-    } finally {
-      setSaving(false)
-    }
-  }
-
-  const f = (k) => (e) => setForm({ ...form, [k]: e.target.type === 'checkbox' ? e.target.checked : e.target.value })
-
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
       <PageHeader
@@ -102,20 +142,16 @@ export default function InvestigatorSuspects() {
         action={
           <div className="flex items-center gap-3">
             <span className="badge bg-primary-500/15 text-primary-300 border border-primary-500/30">{total} total</span>
-            <button onClick={() => setOpen(true)} className="btn-primary text-sm">+ Add Suspect</button>
+            <button onClick={openCreate} className="btn-primary text-sm">+ Add Suspect</button>
           </div>
         }
       />
 
       <div className="card">
-        <div className="px-5 py-4 border-b border-slate-700/50 flex items-center gap-4">
+        <div className="px-4 sm:px-5 py-4 border-b border-slate-700/50 flex flex-col sm:flex-row sm:items-center gap-3">
           <p className="text-sm font-semibold text-white shrink-0">Suspect Registry</p>
-          <input
-            className="input text-sm py-1.5 flex-1 max-w-xs"
-            placeholder="Search name, alias, gang…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          <input className="input text-sm py-1.5 w-full sm:flex-1 sm:max-w-xs" placeholder="Search name, alias, gang…"
+            value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
         {loading ? <div className="flex justify-center py-12"><Spinner /></div>
           : <Table columns={COLUMNS} data={filtered} loading={false} />}
@@ -128,9 +164,9 @@ export default function InvestigatorSuspects() {
         )}
       </div>
 
-      <Modal open={open} onClose={() => setOpen(false)} title="Add Suspect">
+      <Modal open={open} onClose={() => setOpen(false)} title={editSuspect ? `Edit Suspect — ${cleanText(editSuspect.full_name)}` : 'Add Suspect'}>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Full Name *</label>
               <input className="input" placeholder="Suspect full name" value={form.full_name} onChange={f('full_name')} required />
@@ -141,7 +177,7 @@ export default function InvestigatorSuspects() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Gender</label>
               <select className="input" value={form.gender} onChange={f('gender')}>
@@ -157,7 +193,7 @@ export default function InvestigatorSuspects() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Threat Level</label>
               <select className="input" value={form.threat_level} onChange={f('threat_level')}>
@@ -188,24 +224,33 @@ export default function InvestigatorSuspects() {
             <label htmlFor="known" className="text-sm text-slate-400">Known criminal (prior record)</label>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Link to FIR *</label>
-              <select className="input" value={form.fir_id} onChange={f('fir_id')} required>
-                <option value="">Select FIR…</option>
-                {firs.map((fir) => <option key={fir.id} value={fir.id}>{fir.fir_number}</option>)}
-              </select>
+          {!editSuspect && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Link to FIR *</label>
+                <select className="input" value={form.fir_id} onChange={f('fir_id')} required>
+                  <option value="">Select FIR…</option>
+                  {firs.map((fir) => <option key={fir.id} value={fir.id}>{fir.fir_number}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Role in Case</label>
+                <input className="input" placeholder="e.g. main accused" value={form.role_in_case} onChange={f('role_in_case')} />
+              </div>
             </div>
+          )}
+
+          {editSuspect && (
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Role in Case</label>
               <input className="input" placeholder="e.g. main accused" value={form.role_in_case} onChange={f('role_in_case')} />
             </div>
-          </div>
+          )}
 
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={() => setOpen(false)} className="btn-ghost flex-1">Cancel</button>
             <button type="submit" disabled={saving} className="btn-primary flex-1">
-              {saving ? <Spinner size="sm" /> : 'Add Suspect'}
+              {saving ? <Spinner size="sm" /> : editSuspect ? 'Save Changes' : 'Add Suspect'}
             </button>
           </div>
         </form>

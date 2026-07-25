@@ -12,9 +12,9 @@ export default function Modal({ open, onClose, title, children, size = 'md' }) {
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4">
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-      <div className={`relative w-full ${widths[size]} card p-6 animate-slide-in max-h-[90vh] flex flex-col`}>
+      <div className={`relative w-full ${widths[size]} card p-4 sm:p-6 animate-slide-in max-h-[92vh] sm:max-h-[90vh] flex flex-col rounded-b-none sm:rounded-2xl`}>
         <div className="flex items-center justify-between mb-5 shrink-0">
           <h2 className="text-lg font-semibold text-white">{title}</h2>
           <button onClick={onClose}

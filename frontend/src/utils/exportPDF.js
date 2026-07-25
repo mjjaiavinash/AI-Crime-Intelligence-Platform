@@ -59,12 +59,19 @@ export function exportChatToPDF(messages, title = 'CrimeIQ Chat Export') {
     doc.text(isUser ? 'YOU' : 'CRIMEIQ AI', margin, y)
     y += 5
 
-    // Message content
+    // Message content — strip markdown symbols before rendering
     doc.setFont('helvetica', 'normal')
     doc.setFontSize(9)
     doc.setTextColor(40, 40, 40)
 
-    const lines = doc.splitTextToSize(msg.content, maxW)
+    const cleaned = msg.content
+      .replace(/^#{1,6} /gm, '')          // headings
+      .replace(/\*\*(.+?)\*\*/g, '$1')    // bold
+      .replace(/\*(.+?)\*/g, '$1')        // italic
+      .replace(/^[\*\-\+] /gm, '• ')      // bullets
+      .replace(/^\s+[\*\-\+] /gm, '  • ') // indented bullets
+      .replace(/^---+$/gm, '')            // hr
+    const lines = doc.splitTextToSize(cleaned, maxW)
     lines.forEach((line) => {
       checkY(5)
       doc.text(line, margin, y)
@@ -159,70 +166,81 @@ export function exportReportToPDF(title, content, generatedAt = new Date().toLoc
   const lines = content.split('\n')
   for (const raw of lines) {
     const line = raw.trimEnd()
+    const trimmed = line.trimStart()
+    // measure indent level for nested bullets
+    const indent = line.length - trimmed.length
+    const indentMM = Math.min(Math.floor(indent / 2), 3) * 4  // max 3 levels, 4mm each
 
-    if (/^# /.test(line)) {
+    if (/^#{5} /.test(trimmed)) {
+      checkY(6)
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(9.5); doc.setTextColor(70, 70, 70)
+      const w = doc.splitTextToSize(trimmed.replace(/^#{5} /, ''), maxW)
+      doc.text(w, mL, y); y += w.length * 5 + 1.5
+      continue
+    }
+    if (/^#{4} /.test(trimmed)) {
+      checkY(7); y += 1
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(60, 60, 60)
+      const w = doc.splitTextToSize(trimmed.replace(/^#{4} /, ''), maxW)
+      doc.text(w, mL, y); y += w.length * 5 + 2
+      continue
+    }
+    if (/^#{3} /.test(trimmed)) {
+      checkY(8); y += 1
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(50, 50, 50)
+      const w = doc.splitTextToSize(trimmed.replace(/^#{3} /, ''), maxW)
+      doc.text(w, mL, y); y += w.length * 5.5 + 2
+      continue
+    }
+    if (/^#{2} /.test(trimmed)) {
+      checkY(9); y += 2
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(30, 30, 30)
+      const w = doc.splitTextToSize(trimmed.replace(/^#{2} /, ''), maxW)
+      doc.text(w, mL, y); y += w.length * 6 + 3
+      continue
+    }
+    if (/^# /.test(trimmed)) {
       checkY(10); y += 3
       doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(20, 20, 20)
-      const w = doc.splitTextToSize(line.replace(/^# /, ''), maxW)
+      const w = doc.splitTextToSize(trimmed.replace(/^# /, ''), maxW)
       doc.text(w, mL, y); y += w.length * 6.5 + 1
       doc.setDrawColor(99, 102, 241); doc.setLineWidth(0.3); doc.line(mL, y, pageW - mR, y); y += 4
       continue
     }
-    if (/^## /.test(line)) {
-      checkY(9); y += 2
-      doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(30, 30, 30)
-      const w = doc.splitTextToSize(line.replace(/^## /, ''), maxW)
-      doc.text(w, mL, y); y += w.length * 6 + 3
-      continue
-    }
-    if (/^### /.test(line)) {
-      checkY(8); y += 1
-      doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(50, 50, 50)
-      const w = doc.splitTextToSize(line.replace(/^### /, ''), maxW)
-      doc.text(w, mL, y); y += w.length * 5.5 + 2
-      continue
-    }
-    if (/^#### /.test(line)) {
-      checkY(7); y += 1
-      doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(60, 60, 60)
-      const w = doc.splitTextToSize(line.replace(/^#### /, ''), maxW)
-      doc.text(w, mL, y); y += w.length * 5 + 2
-      continue
-    }
-    if (/^##### /.test(line)) {
-      checkY(6)
-      doc.setFont('helvetica', 'bold'); doc.setFontSize(9.5); doc.setTextColor(70, 70, 70)
-      const w = doc.splitTextToSize(line.replace(/^##### /, ''), maxW)
-      doc.text(w, mL, y); y += w.length * 5 + 1.5
-      continue
-    }
-    if (/^---+$/.test(line.trim())) {
+    if (/^---+$/.test(trimmed)) {
       checkY(4)
       doc.setDrawColor(180, 180, 180); doc.setLineWidth(0.2); doc.line(mL, y, pageW - mR, y); y += 4
       continue
     }
-    if (/^[\*\-] /.test(line)) {
+    // bullet: *, -, + with optional indent
+    if (/^[\*\-\+] /.test(trimmed)) {
       checkY(6)
+      const bulletX = mL + indentMM
+      const textX   = bulletX + 5
+      const textW   = maxW - indentMM - 5
       doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(40, 40, 40)
-      doc.text('•', mL + 1, y)
-      y = renderInline(line.replace(/^[\*\-] /, ''), mL + 6, y, 9, [40, 40, 40], 6)
+      doc.text('•', bulletX, y)
+      y = renderInline(trimmed.replace(/^[\*\-\+] /, ''), textX, y, 9, [40, 40, 40], indentMM + 5)
       y += 1.5
       continue
     }
-    if (/^\d+\.\s/.test(line)) {
+    if (/^\d+\.\s/.test(trimmed)) {
       checkY(6)
-      const num  = line.match(/^(\d+\.)/)[1]
-      const text = line.replace(/^\d+\.\s/, '')
+      const num  = trimmed.match(/^(\d+\.)/)[1]
+      const text = trimmed.replace(/^\d+\.\s/, '')
+      const bulletX = mL + indentMM
       doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(40, 40, 40)
-      doc.text(num, mL + 1, y)
-      y = renderInline(text, mL + 8, y, 9, [40, 40, 40], 8)
+      doc.text(num, bulletX, y)
+      y = renderInline(text, bulletX + 7, y, 9, [40, 40, 40], indentMM + 7)
       y += 1.5
       continue
     }
-    if (line.trim() === '') { y += 2; continue }
+    if (trimmed === '') { y += 2; continue }
 
+    // strip any remaining lone * or _ markers (italic/stray)
+    const cleaned = trimmed.replace(/(?<![\*])\*(?![\*])/g, '').replace(/(?<!_)_(?!_)/g, '')
     checkY(6)
-    y = renderInline(line, mL, y, 9, [40, 40, 40])
+    y = renderInline(cleaned, mL, y, 9, [40, 40, 40])
     y += 1.5
   }
 

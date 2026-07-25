@@ -52,7 +52,7 @@ export default function DashboardPage() {
       />
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard title="Total Crimes"    value="296"  trend={12}  icon={<IconShield />} accent />
         <StatCard title="Open Cases"      value="84"   trend={5}   icon={<IconAlert />} />
         <StatCard title="Closed Cases"    value="178"  trend={-8}  icon={<IconCheck />} />

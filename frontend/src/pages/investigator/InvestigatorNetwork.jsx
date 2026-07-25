@@ -54,7 +54,7 @@ export default function InvestigatorNetwork() {
       </div>
 
       {/* Legend cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {INFO_CARDS.map(({ color, dot, label, desc }) => (
           <div key={label} className={`card p-4 border ${color} flex items-start gap-3`}>
             <span className={`w-3 h-3 rounded-full mt-0.5 shrink-0 ${dot}`} />

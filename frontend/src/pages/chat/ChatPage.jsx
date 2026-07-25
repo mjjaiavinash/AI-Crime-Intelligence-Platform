@@ -58,14 +58,24 @@ function CopyButton({ text }) {
 
 export default function ChatPage() {
   const token = useAuthStore((s) => s.token)
+  const user  = useAuthStore((s) => s.user)
   const navigate = useNavigate()
-  const [messages, setMessages] = useState([])
+  const STORAGE_KEY = `crimeiq_chat_${user?.id ?? 'guest'}`
+
+  const [messages, setMessages] = useState(() => {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]') } catch { return [] }
+  })
   const [input,    setInput]    = useState('')
   const [loading,  setLoading]  = useState(false)
   const [lang,     setLang]     = useState('en')
   const [autoTTS,  setAutoTTS]  = useState(false)
   const bottomRef = useRef(null)
   const inputRef  = useRef(null)
+
+  // Persist messages to localStorage on every change
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages))
+  }, [messages])
 
   const { listening, start: startSTT, stop: stopSTT } = useSpeechRecognition((text) => {
     setInput(text)
@@ -165,7 +175,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex flex-col max-w-5xl mx-auto" style={{ height: 'calc(100vh - 2rem)' }}>
+    <div className="flex flex-col max-w-5xl mx-auto" style={{ height: '100%', minHeight: 0 }}>
 
       {/* Top bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-4 mb-2 border-b border-slate-700/50 shrink-0">
@@ -202,7 +212,7 @@ export default function ChatPage() {
           </button>
 
           {messages.length > 0 && (
-            <button onClick={() => setMessages([])} className="btn-ghost text-xs text-slate-500">Clear</button>
+            <button onClick={() => { setMessages([]); localStorage.removeItem(STORAGE_KEY) }} className="btn-ghost text-xs text-slate-500">Clear</button>
           )}
         </div>
       </div>

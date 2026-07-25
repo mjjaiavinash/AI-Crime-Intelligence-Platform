@@ -61,7 +61,8 @@ function RoleRedirect() {
   const user = useAuthStore((s) => s.user)
   const token = useAuthStore((s) => s.token)
   if (!token) return <Navigate to="/login" replace />
-  const role = user?.role
+  if (!user) return null  // wait for profile to load
+  const role = user.role
   if (role === 'admin')        return <Navigate to="/admin/dashboard" replace />
   if (role === 'crime_analyst') return <Navigate to="/analyst/dashboard" replace />
   if (role === 'supervisor')   return <Navigate to="/supervisor/dashboard" replace />

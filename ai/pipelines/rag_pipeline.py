@@ -21,16 +21,16 @@ def run_rag_pipeline(
     if is_greeting:
         joined_context = "No context needed — user sent a greeting."
     else:
-        retrieved_items = retrieve_context(query, n_results=4, filters=filters)
+        retrieved_items = retrieve_context(query, n_results=8, filters=filters)
         context_blocks = []
         for item in retrieved_items:
             doc = item["document"]
             source = item["metadata"].get("source", "")
-            # Skip corrupted, junk, or self-referential chunks
+            # Skip corrupted, PDF, or junk chunks
             printable_ratio = sum(c.isprintable() for c in doc) / max(len(doc), 1)
             if printable_ratio < 0.85:
                 continue
-            if source.startswith("CrimeIQ_") or source.endswith(".pdf"):
+            if source.endswith(".pdf") or "CrimeIQ_Chat" in source:
                 continue
             if len(doc.strip()) < 30:
                 continue

@@ -16,7 +16,7 @@ const NAV = [
     items: [
       { to: '/chat',                 label: 'AI Chat',             icon: <IcoChat />,    badge: 'AI' },
       { to: '/supervisor/officers',  label: 'Officer Performance', icon: <IcoBadge /> },
-      { to: '/supervisor/resources', label: 'Resource Allocation', icon: <IcoBox /> },
+      { to: '/supervisor/resources', label: 'Case Assignment',     icon: <IcoBox /> },
       { to: '/supervisor/insights',  label: 'AI Insights',         icon: <IcoBot />,   badge: 'AI' },
       { to: '/supervisor/reports',   label: 'Strategic Reports',   icon: <IcoChart /> },
     ],
@@ -94,24 +94,35 @@ export default function SupervisorSidebar({ collapsed, onToggle, onClose }) {
         ))}
       </nav>
 
-      <div className="border-t border-slate-700/40 p-2.5">
-        <div className={`flex items-center gap-2.5 ${collapsed ? 'justify-center' : 'px-1'}`}>
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-xs font-bold text-white flex-shrink-0 shadow-md">
-            {user?.username?.[0]?.toUpperCase() ?? 'S'}
+      <div className="border-t border-slate-700/40 px-3 py-3">
+        <div className={`flex items-center gap-3 ${collapsed ? 'justify-center' : ''}`}>
+          <div className="relative flex-shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-sm font-bold text-white shadow-md">
+              {user?.username?.[0]?.toUpperCase() ?? 'S'}
+            </div>
+            <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-slate-900" />
           </div>
           {!collapsed && (
             <>
-              <div className="flex-1 overflow-hidden min-w-0">
-                <p className="text-sm font-semibold text-white truncate leading-tight">{user?.username ?? 'Supervisor'}</p>
-                <p className="text-[10px] text-amber-400 truncate leading-tight">Supervisor</p>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-white truncate">{user?.username ?? 'Supervisor'}</p>
+                <p className="text-xs text-slate-400 truncate">Supervisor</p>
               </div>
               <button onClick={handleLogout} title="Sign out"
-                className="flex-shrink-0 p-1.5 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-all">
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
               </button>
             </>
+          )}
+          {collapsed && (
+            <button onClick={handleLogout} title="Sign out"
+              className="flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </button>
           )}
         </div>
       </div>

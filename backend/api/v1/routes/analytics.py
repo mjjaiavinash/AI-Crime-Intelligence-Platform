@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 
 from core.database import get_db
 from core.security import get_current_user
-from schemas.analytics import AnalyticsSummary, NetworkGraph, HotspotPoint, TrendPoint, CrimeTypeCount
+from schemas.analytics import AnalyticsSummary, NetworkGraph, HotspotPoint, TrendPoint, CrimeTypeCount, EarlyWarningAlert, DistrictStat, SociologicalInsights
 from services import analytics_service
 
 router = APIRouter(dependencies=[Depends(get_current_user)])
@@ -44,3 +44,21 @@ def by_type(db: Session = Depends(get_db)):
           summary="Suspect network graph — all roles")
 def network_graph(db: Session = Depends(get_db)):
     return analytics_service.get_network_graph(db)
+
+
+@router.get("/alerts", response_model=list[EarlyWarningAlert],
+            summary="Early warning alerts — analyst/supervisor")
+def alerts(db: Session = Depends(get_db)):
+    return analytics_service.get_alerts(db)
+
+
+@router.get("/by-district", response_model=list[DistrictStat],
+            summary="Crime counts per district")
+def by_district(db: Session = Depends(get_db)):
+    return analytics_service.get_by_district(db)
+
+
+@router.get("/sociological", response_model=SociologicalInsights,
+            summary="Sociological insights — real DB aggregations")
+def sociological(db: Session = Depends(get_db)):
+    return analytics_service.get_sociological(db)

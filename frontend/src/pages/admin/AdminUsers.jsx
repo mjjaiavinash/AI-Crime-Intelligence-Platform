@@ -67,18 +67,35 @@ function COLUMNS(onToggle, onEdit) {
   ]
 }
 
+const OFFICER_EMPTY = { badge_number: '', rank: 'constable', department: '', station_id: '', district_id: '' }
+const RANK_OPTIONS = ['constable', 'head constable', 'sub-inspector', 'inspector', 'dsp', 'sp']
+
 export default function AdminUsers() {
-  const [users,      setUsers]      = useState([])
-  const [loading,    setLoading]    = useState(true)
-  const [modalOpen,  setModalOpen]  = useState(false)
-  const [submitting, setSubmitting] = useState(false)
-  const [form,       setForm]       = useState(EMPTY)
-  const [showPw,     setShowPw]     = useState(false)
-  const [errors,     setErrors]     = useState({})
+  const [users,        setUsers]        = useState([])
+  const [loading,      setLoading]      = useState(true)
+  const [modalOpen,    setModalOpen]    = useState(false)
+  const [submitting,   setSubmitting]   = useState(false)
+  const [form,         setForm]         = useState(EMPTY)
+  const [showPw,       setShowPw]       = useState(false)
+  const [errors,       setErrors]       = useState({})
+  const [officerModal, setOfficerModal] = useState(false)
+  const [officerForm,  setOfficerForm]  = useState(OFFICER_EMPTY)
+  const [newUserId,    setNewUserId]    = useState(null)
+  const [stations,     setStations]     = useState([])
+  const [districts,    setDistricts]    = useState([])
+  const [officerSubmitting, setOfficerSubmitting] = useState(false)
 
   const load = () => {
     setLoading(true)
-    api.get('/auth/users').then((r) => setUsers(r.data)).finally(() => setLoading(false))
+    Promise.allSettled([
+      api.get('/auth/users'),
+      api.get('/police-stations?page_size=100'),
+      api.get('/districts?page_size=100'),
+    ]).then(([u, s, d]) => {
+      if (u.status === 'fulfilled') setUsers(u.value.data)
+      if (s.status === 'fulfilled') setStations(s.value.data.items ?? [])
+      if (d.status === 'fulfilled') setDistricts(d.value.data.items ?? [])
+    }).finally(() => setLoading(false))
   }
 
   useEffect(() => { load() }, [])
@@ -111,16 +128,47 @@ export default function AdminUsers() {
     if (!validate()) return
     setSubmitting(true)
     try {
-      await api.post('/auth/register', form)
+      const { data } = await api.post('/auth/register', form)
       toast.success(`User "${form.username}" created successfully!`)
       setModalOpen(false)
       setForm(EMPTY)
       load()
+      // if investigator or supervisor, offer to create officer profile
+      if (form.role === 'investigator' || form.role === 'supervisor') {
+        setNewUserId(data.id)
+        setOfficerForm(OFFICER_EMPTY)
+        setOfficerModal(true)
+      }
     } catch (err) {
       const msg = err.response?.data?.detail ?? err.response?.data?.error ?? 'Failed to create user.'
       toast.error(typeof msg === 'string' ? msg : msg[0]?.msg ?? 'Validation error')
     } finally {
       setSubmitting(false)
+    }
+  }
+
+  const handleCreateOfficer = async (e) => {
+    e.preventDefault()
+    if (!officerForm.badge_number || !officerForm.station_id || !officerForm.district_id) {
+      toast.error('Badge number, station and district are required.')
+      return
+    }
+    setOfficerSubmitting(true)
+    try {
+      await api.post('/officers', {
+        user_id:     newUserId,
+        badge_number: officerForm.badge_number,
+        rank:        officerForm.rank,
+        department:  officerForm.department || null,
+        station_id:  parseInt(officerForm.station_id),
+        district_id: parseInt(officerForm.district_id),
+      })
+      toast.success('Officer profile created successfully!')
+      setOfficerModal(false)
+    } catch (err) {
+      toast.error(err.response?.data?.detail ?? 'Failed to create officer profile.')
+    } finally {
+      setOfficerSubmitting(false)
     }
   }
 
@@ -156,7 +204,7 @@ export default function AdminUsers() {
       />
 
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: 'Total Users',   value: users.length, color: 'text-blue-400',    icon: '👥' },
           { label: 'Active',        value: active,       color: 'text-emerald-400', icon: '✅' },
@@ -191,7 +239,7 @@ export default function AdminUsers() {
           {/* Role selector — visual pills */}
           <div>
             <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-[0.15em] mb-2">Role</label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {ROLE_OPTIONS.map((r) => (
                 <button key={r.value} type="button"
                   onClick={() => set('role', r.value)}
@@ -225,7 +273,7 @@ export default function AdminUsers() {
           </div>
 
           {/* Username + Full Name */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-[0.15em] mb-1.5">Username *</label>
               <input className={`input ${errors.username ? 'border-red-500/60 focus:ring-red-500/30' : ''}`}
@@ -315,6 +363,63 @@ export default function AdminUsers() {
             <button type="button" onClick={() => setModalOpen(false)} className="btn-ghost px-6">
               Cancel
             </button>
+          </div>
+        </form>
+      </Modal>
+      {/* Officer Profile Modal */}
+      <Modal open={officerModal} onClose={() => setOfficerModal(false)} title="Create Officer Profile" size="md">
+        <div className="mb-4 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
+          <p className="text-xs text-blue-300">User created successfully. Now add their officer profile to assign them to a station and give them a badge number.</p>
+        </div>
+        <form onSubmit={handleCreateOfficer} className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-[0.15em] mb-1.5">Badge Number *</label>
+              <input className="input" placeholder="e.g. KA-1234"
+                value={officerForm.badge_number}
+                onChange={(e) => setOfficerForm((p) => ({ ...p, badge_number: e.target.value }))}
+                required />
+            </div>
+            <div>
+              <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-[0.15em] mb-1.5">Rank *</label>
+              <select className="input" value={officerForm.rank}
+                onChange={(e) => setOfficerForm((p) => ({ ...p, rank: e.target.value }))}>
+                {RANK_OPTIONS.map((r) => (
+                  <option key={r} value={r}>{r.charAt(0).toUpperCase() + r.slice(1)}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div>
+            <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-[0.15em] mb-1.5">Department</label>
+            <input className="input" placeholder="e.g. Criminal Investigation"
+              value={officerForm.department}
+              onChange={(e) => setOfficerForm((p) => ({ ...p, department: e.target.value }))} />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-[0.15em] mb-1.5">District *</label>
+              <select className="input" value={officerForm.district_id}
+                onChange={(e) => setOfficerForm((p) => ({ ...p, district_id: e.target.value }))} required>
+                <option value="">Select district…</option>
+                {districts.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-[0.15em] mb-1.5">Station *</label>
+              <select className="input" value={officerForm.station_id}
+                onChange={(e) => setOfficerForm((p) => ({ ...p, station_id: e.target.value }))} required>
+                <option value="">Select station…</option>
+                {stations.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
+              </select>
+            </div>
+          </div>
+          <div className="flex gap-3 pt-1">
+            <button type="submit" disabled={officerSubmitting}
+              className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-blue-700 to-blue-600 hover:from-blue-600 hover:to-blue-500 transition-all disabled:opacity-50">
+              {officerSubmitting ? <><Spinner size="sm" color="white" /> Creating…</> : 'Create Officer Profile'}
+            </button>
+            <button type="button" onClick={() => setOfficerModal(false)} className="btn-ghost px-6">Skip</button>
           </div>
         </form>
       </Modal>

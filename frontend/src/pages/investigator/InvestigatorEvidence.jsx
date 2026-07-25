@@ -95,10 +95,10 @@ export default function InvestigatorEvidence() {
       />
 
       <div className="card">
-        <div className="px-5 py-4 border-b border-slate-700/50 flex items-center gap-4">
+        <div className="px-4 sm:px-5 py-4 border-b border-slate-700/50 flex flex-col sm:flex-row sm:items-center gap-3">
           <p className="text-sm font-semibold text-white shrink-0">Evidence Registry</p>
           <input
-            className="input text-sm py-1.5 flex-1 max-w-xs"
+            className="input text-sm py-1.5 w-full sm:flex-1 sm:max-w-xs"
             placeholder="Search title, type, status…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -130,7 +130,7 @@ export default function InvestigatorEvidence() {
             <input className="input" placeholder="e.g. CCTV Footage from ATM" value={form.title} onChange={f('title')} required />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Evidence Type</label>
               <select className="input" value={form.evidence_type} onChange={f('evidence_type')}>

@@ -82,7 +82,7 @@ export default function LoginPage() {
         style={{ background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%)' }} />
 
       {/* ── Top bar — branding strip ── */}
-      <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-8 py-5 z-20">
+      <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 sm:px-8 py-4 sm:py-5 z-20">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-lg shadow-blue-500/40">
             <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -100,13 +100,13 @@ export default function LoginPage() {
 
       {/* ── Centered login card ── */}
       <div
-        className={`relative z-10 w-full max-w-[480px] mx-4 transition-all duration-700 ${
+        className={`relative z-10 w-full max-w-[480px] mx-4 sm:mx-auto transition-all duration-700 ${
           mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
         }`}
       >
         {/* Card */}
         <div
-          className="rounded-2xl border border-white/10 backdrop-blur-2xl p-8"
+          className="rounded-2xl border border-white/10 backdrop-blur-2xl px-5 py-7 sm:p-8"
           style={{
             background: 'linear-gradient(135deg, rgba(5,10,20,0.85) 0%, rgba(10,16,32,0.80) 100%)',
             boxShadow: '0 0 0 1px rgba(255,255,255,0.06), 0 32px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.07)',

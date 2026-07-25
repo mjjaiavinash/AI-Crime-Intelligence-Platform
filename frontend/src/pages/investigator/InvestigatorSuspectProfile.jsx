@@ -110,7 +110,7 @@ export default function InvestigatorSuspectProfile() {
                 </div>
                 <span className={`badge border text-xs capitalize ${tStyle.badge}`}>{threat}</span>
               </div>
-              <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                 {[
                   ['Gender',  selected.gender ?? '—'],
                   ['Age',     selected.age_estimated ?? '—'],

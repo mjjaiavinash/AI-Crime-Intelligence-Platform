@@ -1,16 +1,9 @@
 import { useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
-
-const MOCK_ALERTS = [
-  { id: 1, type: 'repeat',  severity: 'critical', title: 'Repeat Offender Active',      desc: 'Known offender Ravi K. (ID #4821) flagged in Bengaluru Urban — 3rd incident this month.', district: 'Bengaluru Urban', time: '12 min ago' },
-  { id: 2, type: 'hotspot', severity: 'high',     title: 'Emerging Crime Hotspot',       desc: 'Vehicle theft cluster detected near Whitefield — 6 incidents in 48 hrs, 2× above baseline.', district: 'Bengaluru East', time: '34 min ago' },
-  { id: 3, type: 'gang',    severity: 'high',     title: 'Gang Activity Detected',       desc: 'Network analysis links 4 recent robberies to organized group in Mysuru district.', district: 'Mysuru', time: '1 hr ago' },
-  { id: 4, type: 'pattern', severity: 'medium',   title: 'Seasonal Crime Pattern Alert', desc: 'Cyber fraud incidents up 40% — consistent with festival season trend from prior years.', district: 'State-wide', time: '2 hrs ago' },
-  { id: 5, type: 'repeat',  severity: 'medium',   title: 'Habitual Offender Released',   desc: 'High-risk offender released from custody — monitoring recommended per risk score 87/100.', district: 'Dharwad', time: '3 hrs ago' },
-]
+import api from '@/services/api'
 
 const SEV = {
-  critical: { bar: 'bg-red-500',    text: 'text-red-400',    badge: 'bg-red-500/15 border-red-500/30 text-red-400',    dot: 'bg-red-500'    },
+  critical: { bar: 'bg-red-500',    text: 'text-red-400',    badge: 'bg-red-500/15 border-red-500/30 text-red-400',       dot: 'bg-red-500'    },
   high:     { bar: 'bg-orange-500', text: 'text-orange-400', badge: 'bg-orange-500/15 border-orange-500/30 text-orange-400', dot: 'bg-orange-500' },
   medium:   { bar: 'bg-yellow-500', text: 'text-yellow-400', badge: 'bg-yellow-500/15 border-yellow-500/30 text-yellow-400', dot: 'bg-yellow-500' },
 }
@@ -23,49 +16,48 @@ const TYPE_ICON = {
 }
 
 export default function EarlyWarningAlerts({ maxItems = 5 }) {
+  const [alerts, setAlerts]       = useState([])
   const [dismissed, setDismissed] = useState(new Set())
-  const [pulse, setPulse] = useState(true)
+  const [pulse, setPulse]         = useState(true)
 
   useEffect(() => {
+    api.get('/analytics/alerts')
+      .then(res => {
+        setAlerts(res.data)
+        const toNotify = res.data.filter(a => a.severity === 'critical' || a.severity === 'high')
+        toNotify.forEach((alert, i) => {
+          setTimeout(() => {
+            toast(
+              <div className="flex items-start gap-2">
+                <span className={`text-xs font-bold mt-0.5 ${alert.severity === 'critical' ? 'text-red-400' : 'text-orange-400'}`}>⚠</span>
+                <div>
+                  <p className="text-xs font-bold text-white">{alert.title}</p>
+                  <p className="text-[11px] text-slate-400 mt-0.5">{alert.district}</p>
+                </div>
+              </div>,
+              {
+                duration: 5000,
+                style: {
+                  background: alert.severity === 'critical' ? 'rgba(239,68,68,0.15)' : 'rgba(249,115,22,0.15)',
+                  border: alert.severity === 'critical' ? '1px solid rgba(239,68,68,0.4)' : '1px solid rgba(249,115,22,0.4)',
+                  color: '#e2e8f0',
+                  fontSize: 13,
+                },
+              }
+            )
+          }, i * 1200)
+        })
+      })
+      .catch(() => setAlerts([]))
     const t = setTimeout(() => setPulse(false), 3000)
     return () => clearTimeout(t)
   }, [])
 
-  // Fire toast notifications for critical/high alerts on mount
-  useEffect(() => {
-    const toNotify = MOCK_ALERTS.filter((a) => a.severity === 'critical' || a.severity === 'high')
-    toNotify.forEach((alert, i) => {
-      setTimeout(() => {
-        toast(
-          <div className="flex items-start gap-2">
-            <span className={`text-xs font-bold mt-0.5 ${
-              alert.severity === 'critical' ? 'text-red-400' : 'text-orange-400'
-            }`}>⚠</span>
-            <div>
-              <p className="text-xs font-bold text-white">{alert.title}</p>
-              <p className="text-[11px] text-slate-400 mt-0.5">{alert.district}</p>
-            </div>
-          </div>,
-          {
-            duration: 5000,
-            style: {
-              background: alert.severity === 'critical' ? 'rgba(239,68,68,0.15)' : 'rgba(249,115,22,0.15)',
-              border: alert.severity === 'critical' ? '1px solid rgba(239,68,68,0.4)' : '1px solid rgba(249,115,22,0.4)',
-              color: '#e2e8f0',
-              fontSize: 13,
-            },
-          }
-        )
-      }, i * 1200)
-    })
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const alerts = MOCK_ALERTS.filter((a) => !dismissed.has(a.id)).slice(0, maxItems)
-  const criticalCount = alerts.filter((a) => a.severity === 'critical').length
+  const visible = alerts.filter(a => !dismissed.has(a.id)).slice(0, maxItems)
+  const criticalCount = visible.filter(a => a.severity === 'critical').length
 
   return (
     <div className="rounded-xl border border-slate-700/50 bg-surface-200 overflow-hidden">
-      {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700/40">
         <div className="flex items-center gap-2.5">
           <div className={`w-2 h-2 rounded-full bg-red-500 ${pulse ? 'animate-pulse' : ''}`} />
@@ -76,21 +68,20 @@ export default function EarlyWarningAlerts({ maxItems = 5 }) {
             </span>
           )}
         </div>
-        <span className="text-[10px] text-slate-500">{alerts.length} active</span>
+        <span className="text-[10px] text-slate-500">{visible.length} active</span>
       </div>
 
-      {/* Alerts list */}
       <div className="divide-y divide-slate-700/30">
-        {alerts.length === 0 ? (
+        {visible.length === 0 ? (
           <div className="px-4 py-6 text-center text-xs text-slate-500">No active alerts</div>
         ) : (
-          alerts.map((alert) => {
-            const s = SEV[alert.severity]
+          visible.map((alert) => {
+            const s = SEV[alert.severity] || SEV.medium
             return (
               <div key={alert.id} className="flex gap-3 px-4 py-3 hover:bg-white/[0.02] transition-colors group">
                 <div className={`w-0.5 rounded-full self-stretch ${s.bar} shrink-0`} />
                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${s.badge} border`}>
-                  {TYPE_ICON[alert.type]}
+                  {TYPE_ICON[alert.type] || TYPE_ICON.pattern}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -107,7 +98,7 @@ export default function EarlyWarningAlerts({ maxItems = 5 }) {
                   </div>
                 </div>
                 <button
-                  onClick={() => setDismissed((p) => new Set([...p, alert.id]))}
+                  onClick={() => setDismissed(p => new Set([...p, alert.id]))}
                   className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded text-slate-600 hover:text-slate-300"
                   title="Dismiss">
                   <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

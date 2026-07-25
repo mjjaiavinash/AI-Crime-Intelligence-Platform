@@ -1,50 +1,85 @@
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import api from '@/services/api'
 import PageHeader from '@/components/common/PageHeader'
-import CrimeBarChart from '@/components/charts/CrimeBarChart'
 import Spinner from '@/components/common/Spinner'
+import Badge from '@/components/common/Badge'
+import { cleanText, formatDate } from '@/utils/helpers'
 
 export default function SupervisorResources() {
-  const [officers, setOfficers] = useState([])
-  const [stations, setStations] = useState([])
-  const [loading,  setLoading]  = useState(true)
+  const [firs,      setFirs]      = useState([])
+  const [officers,  setOfficers]  = useState([])
+  const [stations,  setStations]  = useState([])
+  const [loading,   setLoading]   = useState(true)
+  const [search,    setSearch]    = useState('')
+  const [filterStatus, setFilterStatus] = useState('all')
+  const [assigning, setAssigning] = useState(null) // fir id being updated
 
   useEffect(() => {
-    Promise.all([
-      api.get('/officers?page_size=200'),
+    Promise.allSettled([
+      api.get('/fir?page_size=500'),
+      api.get('/officers?page_size=200&is_active=true'),
       api.get('/police-stations?page_size=100'),
-    ]).then(([o, s]) => {
-      setOfficers(o.data.items ?? [])
-      setStations(s.data.items ?? [])
+    ]).then(([f, o, s]) => {
+      if (f.status === 'fulfilled') setFirs(f.value.data.items ?? [])
+      if (o.status === 'fulfilled') setOfficers(o.value.data.items ?? [])
+      if (s.status === 'fulfilled') setStations(s.value.data.items ?? [])
     }).finally(() => setLoading(false))
   }, [])
 
-  // Group officers by district
-  const byDistrict = officers.reduce((acc, o) => {
-    const key = `District #${o.district_id}`
-    acc[key] = (acc[key] || 0) + 1
-    return acc
-  }, {})
+  const handleAssign = async (firId, officerId) => {
+    setAssigning(firId)
+    try {
+      await api.patch(`/fir/${firId}`, {
+        io_officer_id: officerId ? Number(officerId) : null,
+      })
+      setFirs((prev) => prev.map((f) =>
+        f.id === firId
+          ? { ...f, io_officer_id: officerId ? Number(officerId) : null,
+              io_officer: officers.find((o) => o.id === Number(officerId)) ?? null }
+          : f
+      ))
+      toast.success('Officer assigned successfully.')
+    } catch (err) {
+      toast.error(err.response?.data?.detail ?? 'Assignment failed.')
+    } finally {
+      setAssigning(null)
+    }
+  }
 
-  const chartData = Object.entries(byDistrict).map(([crime_type, total]) => ({ crime_type, total }))
+  const activeOfficers = officers.filter((o) => o.is_active).length
+  const assigned       = firs.filter((f) => f.io_officer_id).length
+  const unassigned     = firs.filter((f) => !f.io_officer_id).length
 
-  const activeOfficers  = officers.filter((o) => o.is_active).length
-  const activeStations  = stations.filter((s) => s.is_active !== false).length
+  const filtered = firs
+    .filter((f) => {
+      if (filterStatus === 'assigned')   return !!f.io_officer_id
+      if (filterStatus === 'unassigned') return !f.io_officer_id
+      return true
+    })
+    .filter((f) => {
+      const q = search.toLowerCase()
+      return !q
+        || f.fir_number?.toLowerCase().includes(q)
+        || f.title?.toLowerCase().includes(q)
+        || (f.io_officer?.user?.full_name ?? f.io_officer?.user?.username ?? '').toLowerCase().includes(q)
+    })
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
-      <PageHeader title="Resource Allocation" subtitle="Officer and station deployment overview" />
+      <PageHeader title="Case Assignment" subtitle="Assign and reassign investigating officers to FIRs" />
 
       {loading ? (
         <div className="flex justify-center py-16"><Spinner /></div>
       ) : (
         <>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Stats */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { label: 'Total Officers',  value: officers.length,  color: 'text-primary-300' },
-              { label: 'Active Officers', value: activeOfficers,   color: 'text-success' },
-              { label: 'Total Stations',  value: stations.length,  color: 'text-blue-400' },
-              { label: 'Active Stations', value: activeStations,   color: 'text-success' },
+              { label: 'Total FIRs',       value: firs.length,     color: 'text-blue-400' },
+              { label: 'Assigned',         value: assigned,        color: 'text-emerald-400' },
+              { label: 'Unassigned',       value: unassigned,      color: 'text-red-400' },
+              { label: 'Active Officers',  value: activeOfficers,  color: 'text-amber-400' },
             ].map(({ label, value, color }) => (
               <div key={label} className="card p-4">
                 <p className="text-xs text-slate-500 uppercase tracking-widest mb-2">{label}</p>
@@ -53,41 +88,74 @@ export default function SupervisorResources() {
             ))}
           </div>
 
-          {chartData.length > 0 && (
-            <div className="card p-5">
-              <p className="text-sm font-semibold text-white mb-1">Officers by District</p>
-              <p className="text-xs text-slate-500 mb-4">Current deployment distribution</p>
-              <CrimeBarChart data={chartData} />
-            </div>
-          )}
-
+          {/* Table */}
           <div className="card overflow-hidden">
-            <div className="px-5 py-4 border-b border-slate-700/50">
-              <p className="text-sm font-semibold text-white">Station Resource Status</p>
+            <div className="px-5 py-4 border-b border-slate-700/50 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+              <p className="text-sm font-semibold text-white">FIR Case Assignments</p>
+              <div className="flex gap-2 w-full sm:w-auto">
+                <input
+                  className="input text-xs flex-1 sm:w-52"
+                  placeholder="Search FIR no., title, officer…"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                <select
+                  className="input text-xs w-36"
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                >
+                  <option value="all">All Cases</option>
+                  <option value="assigned">Assigned</option>
+                  <option value="unassigned">Unassigned</option>
+                </select>
+              </div>
             </div>
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-slate-700/50">
-                  {['Station', 'Code', 'District', 'Status'].map((h) => (
-                    <th key={h} className="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {stations.map((s) => (
-                  <tr key={s.id} className="border-b border-slate-700/30 hover:bg-surface-300/50 transition-colors">
-                    <td className="px-5 py-3 font-medium text-white">{s.name}</td>
-                    <td className="px-5 py-3 font-mono text-xs text-slate-400">{s.station_code}</td>
-                    <td className="px-5 py-3 text-slate-400">District #{s.district_id}</td>
-                    <td className="px-5 py-3">
-                      <span className={`text-xs font-semibold ${s.is_active !== false ? 'text-success' : 'text-slate-500'}`}>
-                        {s.is_active !== false ? 'Active' : 'Inactive'}
-                      </span>
-                    </td>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-slate-700/50">
+                    {['FIR No.', 'Title', 'Status', 'Station', 'Investigating Officer'].map((h) => (
+                      <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">{h}</th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {filtered.length === 0 ? (
+                    <tr><td colSpan={5} className="px-5 py-10 text-center text-slate-500 text-xs">No FIRs found.</td></tr>
+                  ) : filtered.map((f) => (
+                    <tr key={f.id} className="border-b border-slate-700/30 hover:bg-surface-300/50 transition-colors">
+                      <td className="px-4 py-3 font-mono text-xs text-amber-300 whitespace-nowrap">{f.fir_number}</td>
+                      <td className="px-4 py-3 text-xs text-white max-w-[200px] truncate">{cleanText(f.title)}</td>
+                      <td className="px-4 py-3">
+                        <Badge label={f.status.replace(/_/g, ' ')} variant={f.status} />
+                      </td>
+                      <td className="px-4 py-3 text-xs text-slate-400 whitespace-nowrap">
+                        {stations.find((s) => s.id === f.station_id)?.name ?? `Station #${f.station_id}`}
+                      </td>
+                      <td className="px-4 py-3 min-w-[220px]">
+                        {assigning === f.id ? (
+                          <Spinner size="sm" />
+                        ) : (
+                          <select
+                            className="input text-xs py-1 px-2 h-auto"
+                            value={f.io_officer_id ?? ''}
+                            onChange={(e) => handleAssign(f.id, e.target.value || null)}
+                          >
+                            <option value="">— Unassigned —</option>
+                            {officers.map((o) => (
+                              <option key={o.id} value={o.id}>
+                                {o.user?.full_name || o.user?.username} — {o.badge_number} ({o.rank})
+                              </option>
+                            ))}
+                          </select>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </>
       )}

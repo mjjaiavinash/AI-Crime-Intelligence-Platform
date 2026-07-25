@@ -35,7 +35,7 @@ export default function AnalystML() {
         action={<span className="badge bg-accent/15 text-accent-300 border border-accent/30 text-xs">ML Active</span>}
       />
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard title="Models Deployed"  value="3"                                    accent />
         <StatCard title="Hotspot Clusters" value={loading ? '…' : hotspots.length} />
         <StatCard title="Anomalies Found"  value={loading ? '…' : anomalies.length} />

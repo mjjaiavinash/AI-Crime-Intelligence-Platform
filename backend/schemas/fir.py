@@ -68,6 +68,13 @@ class FIROfficerRead(APIBase):
     id:           int
     badge_number: str
     rank:         str
+    user:         Optional['FIROfficerUserRead'] = None
+
+
+class FIROfficerUserRead(APIBase):
+    id:        int
+    username:  str
+    full_name: Optional[str]
 
 
 class FIRCrimeTypeRead(APIBase):
@@ -112,14 +119,16 @@ class FIRRead(APIBase):
 
 
 class FIRSummary(APIBase):
-    id:            int
-    fir_number:    str
-    title:         str
-    status:        FIRStatus
-    incident_date: datetime
-    location_name: Optional[str]
-    latitude:      Optional[float]
-    longitude:     Optional[float]
-    station_id:    int
-    crime_type_id: int
-    created_at:    datetime
+    id:             int
+    fir_number:     str
+    title:          str
+    status:         FIRStatus
+    incident_date:  datetime
+    location_name:  Optional[str]
+    latitude:       Optional[float]
+    longitude:      Optional[float]
+    station_id:     int
+    crime_type_id:  int
+    io_officer_id:  Optional[int]
+    io_officer:     Optional[FIROfficerRead]
+    created_at:     datetime

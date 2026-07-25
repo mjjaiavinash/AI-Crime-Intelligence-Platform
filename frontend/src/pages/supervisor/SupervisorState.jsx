@@ -45,7 +45,7 @@ export default function SupervisorState() {
     <div className="space-y-6 max-w-7xl mx-auto">
       <PageHeader title="State Overview" subtitle="Complete state-level crime intelligence" />
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map(({ label, value, color }) => (
           <div key={label} className="card p-4">
             <p className="text-xs text-slate-500 uppercase tracking-widest mb-2">{label}</p>

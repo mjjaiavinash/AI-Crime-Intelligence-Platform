@@ -11,6 +11,9 @@
 
   body {
     @apply bg-surface text-slate-200 font-sans;
+    overflow-x: hidden;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
     background-image:
       radial-gradient(ellipse at 15% 40%, rgba(30,58,95,0.18) 0%, transparent 55%),
       radial-gradient(ellipse at 85% 15%, rgba(37,99,235,0.06) 0%, transparent 50%),
@@ -111,6 +114,9 @@
 
   /* ── Page layout ── */
   .page-container { @apply space-y-4 md:space-y-6; }
+
+  /* ── Responsive table wrapper ── */
+  .table-responsive { @apply w-full overflow-x-auto -mx-0; }
 
   /* ── Divider ── */
   .divider {

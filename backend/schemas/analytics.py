@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Literal
 from schemas.base import APIBase
 
 
@@ -43,3 +43,55 @@ class AnalyticsSummary(APIBase):
     hotspots: list[HotspotPoint]
     trends: list[TrendPoint]
     by_type: list[CrimeTypeCount]
+
+
+class DistrictStat(APIBase):
+    district_id: int
+    district_name: str
+    total: int
+    open_cases: int
+    closed_cases: int
+    under_investigation: int
+
+
+class EarlyWarningAlert(APIBase):
+    id: str
+    type: Literal["repeat", "hotspot", "gang", "pattern"]
+    severity: Literal["critical", "high", "medium"]
+    title: str
+    desc: str
+    district: str
+    time: str
+
+
+class AgeGroupCount(APIBase):
+    group: str
+    count: int
+
+
+class GenderCount(APIBase):
+    name: str
+    value: int
+
+
+class ZoneCount(APIBase):
+    zone: str
+    crimes: int
+
+
+class RecidivismPoint(APIBase):
+    month: str
+    repeat: int
+    first_time: int
+
+
+class SociologicalInsights(APIBase):
+    age_groups:   list[AgeGroupCount]
+    gender_split: list[GenderCount]
+    injury_types: list[GenderCount]
+    recidivism:   list[RecidivismPoint]
+    by_district:  list[ZoneCount]
+    total_suspects: int
+    total_victims:  int
+    known_criminals: int
+    repeat_rate:  float

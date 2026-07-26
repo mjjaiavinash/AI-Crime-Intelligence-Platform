@@ -45617,3 +45617,15 @@ FROM fir LEFT OUTER JOIN police_stations AS police_stations_1 ON police_stations
 2026-07-25T22:11:04 | INFO     | sqlalchemy.engine.Engine | ROLLBACK
 2026-07-25T22:11:04 | INFO     | http | [97160be6] GET /api/v1/fir → 200 (108.2ms)
 2026-07-25T22:44:27 | INFO     | main | Shutting down AI Crime Intelligence Platform
+2026-07-25T22:48:17 | INFO     | main | Starting AI Crime Intelligence Platform [development]
+2026-07-25T22:48:19 | INFO     | sqlalchemy.engine.Engine | SELECT DATABASE()
+2026-07-25T22:48:19 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-25T22:48:19 | INFO     | sqlalchemy.engine.Engine | SELECT @@sql_mode
+2026-07-25T22:48:19 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-25T22:48:19 | INFO     | sqlalchemy.engine.Engine | SELECT @@lower_case_table_names
+2026-07-25T22:48:19 | INFO     | sqlalchemy.engine.Engine | [raw sql] {}
+2026-07-25T22:48:19 | INFO     | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-07-25T22:48:19 | INFO     | sqlalchemy.engine.Engine | SELECT 1
+2026-07-25T22:48:19 | INFO     | sqlalchemy.engine.Engine | [generated in 0.00261s] {}
+2026-07-25T22:48:19 | INFO     | sqlalchemy.engine.Engine | ROLLBACK
+2026-07-25T22:48:19 | INFO     | main | MySQL connection OK

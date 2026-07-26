@@ -1,0 +1,21 @@
+{
+  "project": {
+    "project_name": "ai-crime-intelligence-platform",
+    "platform_type": "node"
+  },
+  "functions": [
+    {
+      "name": "backend",
+      "type": "Advanced IO",
+      "lang_runtime": "python3.9",
+      "memory": 512,
+      "timeout": 60,
+      "entry_point": "main.app"
+    }
+  ],
+  "web": {
+    "client": {
+      "path": "client"
+    }
+  }
+}

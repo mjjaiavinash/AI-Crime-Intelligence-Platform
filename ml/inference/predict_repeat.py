@@ -5,13 +5,15 @@ import numpy as np
 import joblib
 import pandas as pd
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+_project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+sys.path.insert(0, _project_root)
 
 logger = logging.getLogger(__name__)
 
-MODEL_PATH        = "ml/models/repeat_offender_model.pkl"
-PREPROCESSOR_PATH = "ml/models/repeat_preprocessor.pkl"
-LE_PATH           = "ml/models/repeat_label_encoder.pkl"
+_models_dir       = os.path.join(_project_root, "ml", "models")
+MODEL_PATH        = os.path.join(_models_dir, "repeat_offender_model.pkl")
+PREPROCESSOR_PATH = os.path.join(_models_dir, "repeat_preprocessor.pkl")
+LE_PATH           = os.path.join(_models_dir, "repeat_label_encoder.pkl")
 
 CATEGORICAL_COLS = ["Gender", "District", "Primary_Crime_Type", "Gang_Affiliation"]
 NUMERICAL_COLS   = [

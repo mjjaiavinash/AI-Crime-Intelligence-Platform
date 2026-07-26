@@ -78,10 +78,10 @@ class Settings(BaseSettings):
     @property
     def CHROMA_PERSIST_PATH(self) -> str:
         """Absolute path to ChromaDB persist directory."""
-        import os
         path = self.CHROMA_PERSIST_DIR
         if not os.path.isabs(path):
             path = os.path.abspath(os.path.join(backend_dir, path))
+        os.makedirs(path, exist_ok=True)
         return path
 
     # ── CORS ──────────────────────────────────────────────────────────────────
@@ -90,6 +90,15 @@ class Settings(BaseSettings):
     # ── Uploads ───────────────────────────────────────────────────────────────
     UPLOAD_DIR: str = "../uploads"
     MAX_UPLOAD_MB: int = 20
+
+    @property
+    def UPLOAD_PATH(self) -> str:
+        """Absolute path to uploads directory."""
+        path = self.UPLOAD_DIR
+        if not os.path.isabs(path):
+            path = os.path.abspath(os.path.join(backend_dir, path))
+        os.makedirs(path, exist_ok=True)
+        return path
 
 
 @lru_cache

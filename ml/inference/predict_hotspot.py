@@ -5,13 +5,15 @@ import numpy as np
 import joblib
 import pandas as pd
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+_project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+sys.path.insert(0, _project_root)
 
 logger = logging.getLogger(__name__)
 
-MODEL_PATH        = "ml/models/hotspot_model.pkl"
-PREPROCESSOR_PATH = "ml/models/hotspot_preprocessor.pkl"
-LE_PATH           = "ml/models/hotspot_label_encoder.pkl"
+_models_dir       = os.path.join(_project_root, "ml", "models")
+MODEL_PATH        = os.path.join(_models_dir, "hotspot_model.pkl")
+PREPROCESSOR_PATH = os.path.join(_models_dir, "hotspot_preprocessor.pkl")
+LE_PATH           = os.path.join(_models_dir, "hotspot_label_encoder.pkl")
 
 CATEGORICAL_COLS = ["District", "Taluk", "Police_Station", "Crime_Type", "Season", "Festival_Season"]
 NUMERICAL_COLS   = [

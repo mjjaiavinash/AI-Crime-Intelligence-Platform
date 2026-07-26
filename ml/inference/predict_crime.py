@@ -6,13 +6,15 @@ import joblib
 import pandas as pd
 from scipy.sparse import hstack, csr_matrix
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+_project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+sys.path.insert(0, _project_root)
 
 logger = logging.getLogger(__name__)
 
-MODEL_PATH        = "ml/models/crime_classifier_model.pkl"
-PREPROCESSOR_PATH = "ml/models/classifier_preprocessor.pkl"
-LE_PATH           = "ml/models/classifier_label_encoder.pkl"
+_models_dir       = os.path.join(_project_root, "ml", "models")
+MODEL_PATH        = os.path.join(_models_dir, "crime_classifier_model.pkl")
+PREPROCESSOR_PATH = os.path.join(_models_dir, "classifier_preprocessor.pkl")
+LE_PATH           = os.path.join(_models_dir, "classifier_label_encoder.pkl")
 
 CATEGORICAL_COLS = ["District", "Location_Type", "Time_of_Day", "Victim_Gender", "Weapon_Used"]
 NUMERICAL_COLS   = ["Victim_Age", "Incident_Month", "Incident_DayOfWeek", "Incident_Year", "Is_Weekend"]

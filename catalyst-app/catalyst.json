@@ -1,16 +1,23 @@
 {
   "project": {
     "project_name": "ai-crime-intelligence-platform",
-    "platform_type": "node"
+    "platform_type": "AppSail"
   },
-  "functions": [
+  "services": [
     {
       "name": "backend",
-      "type": "Advanced IO",
-      "lang_runtime": "python3.9",
-      "memory": 512,
-      "timeout": 60,
-      "entry_point": "main.app"
+      "type": "AppSail",
+      "stack": "python3.9",
+      "memory": 1024,
+      "instances": 1,
+      "port": 8000,
+      "build_command": "pip install -r requirements.txt",
+      "run_command": "uvicorn main:app --host 0.0.0.0 --port 8000",
+      "root_dir": "backend",
+      "env_variables": {
+        "APP_ENV": "production",
+        "PYTHONPATH": "/app:/app/backend"
+      }
     }
   ],
   "web": {

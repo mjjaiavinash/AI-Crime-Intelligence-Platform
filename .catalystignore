@@ -1,0 +1,62 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Frontend source (only built client is needed)
+frontend/
+!catalyst-app/client/
+
+# Node
+node_modules/
+
+# Logs
+*.log
+backend/logs/
+
+# Uploads & temp
+uploads/temp/
+uploads/evidence/
+uploads/datasets/
+reports/generated/
+reports/exports/
+
+# ML training artifacts
+ml/Dataset Model/
+ml/training/
+ml/evaluation/
+ml/preprocessing/
+
+# Database
+database/chromadb/
+*.sqlite
+*.sqlite3
+*.db
+
+# Docs
+docs/
+reports/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Git
+.git/
+
+# Secrets
+.env
+*.env
+!.env.example

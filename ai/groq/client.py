@@ -65,10 +65,16 @@ class GroqClientManager:
                 temperature=temperature,
                 stream=True,
             )
+        except Exception as e:
+            logger.error("Error initiating Groq stream: %s", e)
+            yield f"Sorry, I could not connect to the AI service. Error: {e}"
+            return
+
+        try:
             for chunk in response:
                 content = chunk.choices[0].delta.content
                 if content:
                     yield content
         except Exception as e:
-            logger.error("Error in Groq completion stream: %s", e)
-            yield f"\n[Stream Error: {e}]"
+            logger.error("Error reading Groq stream chunks: %s", e)
+            yield f"\n\nSorry, the response was interrupted. Please try again."

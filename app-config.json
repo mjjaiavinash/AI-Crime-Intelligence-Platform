@@ -1,0 +1,15 @@
+{
+	"command": "bash startup.sh",
+	"build_path": "./",
+	"stack": "python_3_12",
+	"port": 8000,
+	"env_variables": {
+		"APP_ENV": "production",
+		"HF_HOME": "/tmp/hf_cache",
+		"TRANSFORMERS_CACHE": "/tmp/hf_cache"
+	},
+	"memory": 1024,
+	"scripts": {
+		"build": "pip install -r requirements.txt"
+	}
+}

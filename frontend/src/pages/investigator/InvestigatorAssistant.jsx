@@ -35,6 +35,7 @@ export default function InvestigatorAssistant() {
   const [firs,        setFirs]        = useState([])
   const [firId,       setFirId]       = useState('')
   const [loading,     setLoading]     = useState(false)
+  const [firsLoading, setFirsLoading] = useState(true)
   const [result,      setResult]      = useState(null)
   const [similarOpen, setSimilarOpen] = useState(false)
   const summaryRef = useRef(null)
@@ -177,7 +178,10 @@ export default function InvestigatorAssistant() {
   }
 
   useEffect(() => {
-    api.get('/fir?page_size=50').then((r) => setFirs(r.data.items ?? []))
+    api.get('/fir?page_size=100')
+      .then((r) => setFirs(r.data.items ?? []))
+      .catch(() => toast.error('Failed to load FIR list. Is the backend running?'))
+      .finally(() => setFirsLoading(false))
   }, [])
 
   const handleAnalyze = async (e) => {
@@ -210,11 +214,16 @@ export default function InvestigatorAssistant() {
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Select FIR</label>
               <select className="input" value={firId} onChange={(e) => setFirId(e.target.value)} required>
-                <option value="">Choose a case…</option>
+                <option value="">
+                  {firsLoading ? 'Loading FIRs…' : firs.length === 0 ? 'No FIRs found in database' : 'Choose a case…'}
+                </option>
                 {firs.map((f) => (
                   <option key={f.id} value={f.id}>{f.fir_number} — {cleanText(f.title)}</option>
                 ))}
               </select>
+              {!firsLoading && firs.length === 0 && (
+                <p className="text-xs text-amber-400 mt-1.5">⚠ No FIRs in database. File a FIR first from the FIR Management page.</p>
+              )}
             </div>
             <button type="submit" disabled={loading} className="btn-accent w-full">
               {loading ? <><Spinner size="sm" /> Analyzing…</> : 'Generate Summary'}

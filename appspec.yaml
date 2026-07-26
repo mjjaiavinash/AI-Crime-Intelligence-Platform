@@ -3,7 +3,7 @@ version: 1
 services:
   backend:
     type: AppSail
-    stack: python3.9
+    stack: python3.12
     memory: 1024
     instances: 1
     port: 8000

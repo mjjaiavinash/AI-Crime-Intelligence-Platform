@@ -18,19 +18,18 @@ router = APIRouter(dependencies=[Depends(get_current_user)])
     "",
     summary="Interactive RAG Chat Stream — all roles",
 )
-def chat_stream(payload: ChatRequest):
+async def chat_stream(payload: ChatRequest):
     """
     Sends a query to the conversational assistant.
     Returns a stream of text tokens (chunk-encoded SSE-like stream) retrieved using ChromaDB RAG and Groq.
     """
     try:
-        # Yielding tokens directly as a stream
         generator = run_rag_pipeline(
             query=payload.query,
             chat_history=payload.chat_history,
             filters=payload.filters,
         )
-        return StreamingResponse(generator, media_type="text/event-stream")
+        return StreamingResponse(generator, media_type="text/plain; charset=utf-8")
     except Exception as e:
         logger.error("Chat streaming failed: %s", e)
         raise HTTPException(status_code=500, detail=str(e))

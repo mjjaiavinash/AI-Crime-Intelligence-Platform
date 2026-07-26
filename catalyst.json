@@ -1,0 +1,12 @@
+{
+  "appsail": [
+    {
+      "source": ".",
+      "name": "crimeiq-backend"
+    },
+    {
+      "source": ".",
+      "name": "crimeiq-backend-v2"
+    }
+  ]
+}

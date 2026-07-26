@@ -12,8 +12,8 @@
       "instances": 1,
       "port": 8000,
       "build_command": "pip install -r requirements.txt",
-      "run_command": "uvicorn main:app --host 0.0.0.0 --port 8000",
-      "root_dir": "backend",
+      "run_command": "bash startup.sh",
+      "root_dir": ".",
       "env_variables": {
         "APP_ENV": "production",
         "PYTHONPATH": "/app:/app/backend"

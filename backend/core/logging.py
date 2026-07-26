@@ -3,7 +3,11 @@ import sys
 import os
 from core.config import settings
 
-_LOG_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "logs", "app.log")
+_LOG_FILE = (
+    "/tmp/logs/app.log"
+    if os.environ.get("APP_ENV") == "production"
+    else os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "logs", "app.log")
+)
 
 
 def _get_level() -> int:

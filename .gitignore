@@ -51,8 +51,8 @@ uploads/datasets/
 reports/generated/
 reports/exports/
 
-# ── ML — large binary model files (tracked via Git LFS or excluded) 
-ml/models/*.pkl
+# ── ML — large binary model files
+# ml/models/*.pkl  <-- tracked in git for deployment (required by Catalyst)
 ml/Dataset Model/
 
 # ── IDE ────────────────────────────────────────────────────────────

@@ -7,6 +7,8 @@ import Spinner from '@/components/common/Spinner'
 import ExplainableAI from '@/components/common/ExplainableAI'
 import { exportChatToPDF } from '@/utils/exportPDF'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
+
 const SUGGESTED = [
   'What are the top crime hotspots in Karnataka?',
   'Who are the repeat offenders with high threat level in Bengaluru?',
@@ -93,7 +95,7 @@ export default function ChatPage() {
       const fd = new FormData()
       fd.append('text', text.slice(0, 500))
       fd.append('lang', detectLang(text))
-      const res = await fetch('/api/v1/voice/tts', {
+      const res = await fetch(`${API_BASE_URL}/api/v1/voice/tts`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: fd,
@@ -115,7 +117,7 @@ export default function ChatPage() {
     setLoading(true)
 
     try {
-      const res = await fetch('/api/v1/chat', {
+      const res = await fetch(`${API_BASE_URL}/api/v1/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({
@@ -155,7 +157,7 @@ export default function ChatPage() {
     fd.append('file', file)
     toast.loading('Uploading document...', { id: 'upload' })
     try {
-      const res = await fetch('/api/v1/chat/ingest', {
+      const res = await fetch(`${API_BASE_URL}/api/v1/chat/ingest`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: fd,

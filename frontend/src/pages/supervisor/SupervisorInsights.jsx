@@ -6,6 +6,8 @@ import useAuthStore from '@/store/authStore'
 import PageHeader from '@/components/common/PageHeader'
 import Spinner from '@/components/common/Spinner'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
+
 const SEV_STYLE = {
   critical: 'bg-red-500/15 text-red-400 border-red-500/30',
   high:     'bg-orange-500/15 text-orange-400 border-orange-500/30',
@@ -42,7 +44,7 @@ export default function SupervisorInsights() {
     setStream('')
     setCustom(null)
     try {
-      const res = await fetch('/api/v1/chat', {
+      const res = await fetch(`${API_BASE_URL}/api/v1/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ query, chat_history: [] }),

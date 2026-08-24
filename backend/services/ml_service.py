@@ -10,11 +10,6 @@ import os
 from core.logging import get_logger
 from core.exceptions import ServiceUnavailableException, BadRequestException
 
-# Add project root so ml.inference modules resolve correctly
-_project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-if _project_root not in sys.path:
-    sys.path.insert(0, _project_root)
-
 logger = get_logger(__name__)
 
 

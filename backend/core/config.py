@@ -8,9 +8,6 @@ sqlite3.sqlite_version = "3.35.0"
 
 config_dir = os.path.dirname(os.path.abspath(__file__))
 backend_dir = os.path.dirname(config_dir)
-project_root = os.path.dirname(backend_dir)
-if project_root not in sys.path:
-    sys.path.insert(0, project_root)
 if backend_dir not in sys.path:
     sys.path.insert(0, backend_dir)
 
@@ -72,7 +69,7 @@ class Settings(BaseSettings):
     GROQ_MODEL: str = "llama-3.1-8b-instant"
 
     # ── ChromaDB ──────────────────────────────────────────────────────────────
-    CHROMA_PERSIST_DIR: str = "../database/chromadb"
+    CHROMA_PERSIST_DIR: str = "database/chromadb"
     CHROMA_COLLECTION_NAME: str = "crime_documents"
 
     @property
@@ -88,7 +85,7 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: List[str] = ["http://localhost:5173", "http://localhost:3000"]
 
     # ── Uploads ───────────────────────────────────────────────────────────────
-    UPLOAD_DIR: str = "../uploads"
+    UPLOAD_DIR: str = "uploads"
     MAX_UPLOAD_MB: int = 20
 
     @property

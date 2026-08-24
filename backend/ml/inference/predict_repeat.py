@@ -5,12 +5,13 @@ import numpy as np
 import joblib
 import pandas as pd
 
-_project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-sys.path.insert(0, _project_root)
+_backend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if _backend_dir not in sys.path:
+    sys.path.insert(0, _backend_dir)
 
 logger = logging.getLogger(__name__)
 
-_models_dir       = os.path.join(_project_root, "ml", "models")
+_models_dir       = os.path.join(_backend_dir, "ml", "models")
 MODEL_PATH        = os.path.join(_models_dir, "repeat_offender_model.pkl")
 PREPROCESSOR_PATH = os.path.join(_models_dir, "repeat_preprocessor.pkl")
 LE_PATH           = os.path.join(_models_dir, "repeat_label_encoder.pkl")
